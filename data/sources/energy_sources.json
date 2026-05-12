@@ -1,0 +1,134 @@
+[
+  {
+    "id": "catl_2025_annual_report",
+    "title": "CATL 2025 Annual Report",
+    "source_url": "https://www.catl.com/en/news/6773.html",
+    "source_kind": "page",
+    "company": "CATL",
+    "region": "china",
+    "category": "battery_storage",
+    "year": 2025,
+    "tags": ["annual_report", "battery", "storage"]
+  },
+  {
+    "id": "catl_2024_annual_report",
+    "title": "CATL 2024 Annual Report",
+    "source_url": "https://www.catl.com/en/news/6392.html",
+    "source_kind": "page",
+    "company": "CATL",
+    "region": "china",
+    "category": "battery_storage",
+    "year": 2024,
+    "tags": ["annual_report", "battery", "storage"]
+  },
+  {
+    "id": "byd_periodic_reports",
+    "title": "BYD Periodic Reports",
+    "source_url": "https://www.bydglobal.com/en/InvestorAnnals.html",
+    "source_kind": "page",
+    "company": "BYD",
+    "region": "china",
+    "category": "ev_battery_storage",
+    "year": 2025,
+    "tags": ["investor_relations", "annual_report", "interim_report"]
+  },
+  {
+    "id": "sungrow_investor_reports",
+    "title": "Sungrow Investor Reports",
+    "source_url": "https://www.sungrowpower.com/en/about-us/investor",
+    "source_kind": "page",
+    "company": "Sungrow",
+    "region": "china",
+    "category": "inverter_storage",
+    "year": 2025,
+    "tags": ["investor_relations", "annual_report", "inverter", "storage"]
+  },
+  {
+    "id": "longi_investor_reports",
+    "title": "LONGi Investor Reports",
+    "source_url": "https://www.longi.com/en/investor",
+    "source_kind": "page",
+    "company": "LONGi",
+    "region": "china",
+    "category": "solar_pv",
+    "year": 2025,
+    "tags": ["investor_relations", "annual_report", "solar"]
+  },
+  {
+    "id": "tesla_2024_annual_report",
+    "title": "Tesla 2024 Annual Report",
+    "source_url": "https://ir.tesla.com/_flysystem/s3/sec/000162828025003063/tsla-20241231-gen.pdf",
+    "source_kind": "pdf",
+    "company": "Tesla",
+    "region": "global",
+    "category": "ev_storage",
+    "year": 2024,
+    "tags": ["annual_report", "battery", "storage", "ev"]
+  },
+  {
+    "id": "first_solar_annual_reports",
+    "title": "First Solar Annual Reports",
+    "source_url": "https://investor.firstsolar.com/financials/annual-reports/default.aspx",
+    "source_kind": "page",
+    "company": "First Solar",
+    "region": "global",
+    "category": "solar_pv",
+    "year": 2025,
+    "tags": ["investor_relations", "annual_report", "solar"]
+  },
+  {
+    "id": "enphase_investor_relations",
+    "title": "Enphase Investor Relations",
+    "source_url": "https://investor.enphase.com/",
+    "source_kind": "page",
+    "company": "Enphase",
+    "region": "global",
+    "category": "solar_storage",
+    "year": 2025,
+    "tags": ["investor_relations", "annual_report", "solar", "storage"]
+  },
+  {
+    "id": "iea_renewables_2025",
+    "title": "IEA Renewables 2025",
+    "source_url": "https://www.iea.org/reports/renewables-2025",
+    "source_kind": "page",
+    "organization": "IEA",
+    "region": "global",
+    "category": "industry_report",
+    "year": 2025,
+    "tags": ["renewables", "forecast", "industry_report"]
+  },
+  {
+    "id": "iea_electricity_mid_year_update_2025",
+    "title": "IEA Electricity Mid-Year Update 2025",
+    "source_url": "https://www.iea.org/reports/electricity-mid-year-update-2025",
+    "source_kind": "page",
+    "organization": "IEA",
+    "region": "global",
+    "category": "industry_report",
+    "year": 2025,
+    "tags": ["electricity", "renewables", "industry_report"]
+  },
+  {
+    "id": "irena_capacity_statistics_2025",
+    "title": "IRENA Renewable Capacity Statistics 2025",
+    "source_url": "https://www.irena.org/Publications/2025/Mar/Renewable-capacity-statistics-2025",
+    "source_kind": "page",
+    "organization": "IRENA",
+    "region": "global",
+    "category": "industry_report",
+    "year": 2025,
+    "tags": ["capacity", "statistics", "renewables"]
+  },
+  {
+    "id": "irena_energy_statistics_2025",
+    "title": "IRENA Renewable Energy Statistics 2025",
+    "source_url": "https://www.irena.org/Publications/2025/Jul/Renewable-energy-statistics-2025",
+    "source_kind": "page",
+    "organization": "IRENA",
+    "region": "global",
+    "category": "industry_report",
+    "year": 2025,
+    "tags": ["statistics", "renewables", "global"]
+  }
+]

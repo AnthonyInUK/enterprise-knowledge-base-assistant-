@@ -1,0 +1,17 @@
+{$SITE_ADDRESS} {
+  encode zstd gzip
+
+  @api path /v1/*
+  reverse_proxy @api api:8000
+
+  root * /srv
+  try_files {path} /index.html
+  file_server
+
+  header {
+    X-Content-Type-Options nosniff
+    X-Frame-Options DENY
+    Referrer-Policy no-referrer
+  }
+}
+
