@@ -13,6 +13,7 @@ import urllib.error
 import urllib.request
 from collections import Counter, defaultdict
 from dataclasses import dataclass
+from pathlib import Path
 from dotenv import load_dotenv
 from datetime import datetime, timezone
 from typing import Any, Iterable, Sequence
@@ -66,125 +67,132 @@ QUERY_NOISE_TOKENS = {
 }
 
 
-CN_ALIAS_MAP: dict[str, list[str]] = {
-    "宁德时代": ["CATL", "Contemporary Amperex Technology Co", "battery"],
-    "比亚迪": ["BYD", "build your dreams", "battery"],
-    "阳光电源": ["Sungrow", "inverter", "storage"],
-    "隆基": ["LONGi", "LONGi Green Energy", "solar", "photovoltaic"],
-    "隆基绿能": ["LONGi", "LONGi Green Energy", "solar", "photovoltaic"],
-    "特斯拉": ["Tesla", "energy", "battery", "storage"],
-    "第一太阳能": ["First Solar", "thin-film", "solar"],
-    "国际能源署": ["IEA", "renewables", "energy"],
-    "国际可再生能源署": ["IRENA", "renewables", "energy"],
-    "储能": ["storage", "battery"],
-    "光伏": ["solar", "photovoltaic"],
-    "电池": ["battery", "cell", "cells"],
-    "装机": ["capacity", "installed", "deployment"],
-    "营收": ["revenue", "income", "sales"],
-    "收入": ["revenue", "income", "sales"],
-    "利润": ["profit", "earnings", "margin"],
-    "财务": ["financial", "results"],
-    "经营结果": ["financial", "results"],
-    "产能": ["capacity", "manufacturing", "production"],
-    "制造": ["manufacturing", "production"],
-    "部署": ["deployment", "installed"],
-    "订单": ["orders", "backlog", "deliveries"],
-    "项目": ["project", "contract", "agreement"],
-    "合作": ["partner", "cooperation", "agreement"],
-    "海外": ["overseas", "international", "global"],
-    "市场": ["market", "region", "international"],
-    "技术路线": ["technology", "roadmap", "strategy"],
-    "技术": ["technology", "product", "solution"],
-    "解决方案": ["solution", "product"],
+def _load_query_aliases() -> dict[str, dict[str, list[str]]]:
+    """Load query-time alias maps from data/config/query_aliases.json.
+
+    Path resolves relative to the repo root (this file's grandparent), which
+    matches the layout shipped in the Docker image. Override with the env var
+    RAG_ALIASES_PATH if needed.
+    """
+    path = os.getenv("RAG_ALIASES_PATH") or str(
+        Path(__file__).resolve().parents[1] / "data" / "config" / "query_aliases.json"
+    )
+    try:
+        with open(path, encoding="utf-8") as handle:
+            data = json.load(handle)
+    except (OSError, ValueError) as exc:
+        raise RuntimeError(f"Failed to load query aliases from {path!r}: {exc}") from exc
+    return {
+        "cn_alias_map": {k: list(v) for k, v in data.get("cn_alias_map", {}).items()},
+        "document_hints": {k: list(v) for k, v in data.get("document_hints", {}).items()},
+    }
+
+
+_QUERY_ALIASES = _load_query_aliases()
+CN_ALIAS_MAP: dict[str, list[str]] = _QUERY_ALIASES["cn_alias_map"]
+
+# Single source of truth for per-category retrieval config. Each category
+# co-locates all of its term lists so adding/editing a category is a single
+# edit here. The four module-level dicts below are read-only views derived
+# from this — kept for backward compatibility with existing imports.
+#   keywords — question-classification terms (bilingual)
+#   rewrite  — query-expansion phrases injected into retrieval
+#   rerank   — terms that earn a rerank bonus when present in a chunk
+#   sections — section titles preferred for this category
+CATEGORY_CONFIG: dict[str, dict[str, list[str]]] = {
+    "financial": {
+        "keywords": ["revenue", "income", "profit", "earnings", "margin", "financial", "收入", "营收", "利润", "财务", "经营结果"],
+        "rewrite": [
+            "revenue",
+            "net sales",
+            "gross profit",
+            "operating income",
+            "net income",
+            "financial review",
+            "results of operations",
+            "management discussion",
+        ],
+        "rerank": ["revenue", "net sales", "gross profit", "operating income", "net income", "results of operations", "financial review"],
+        "sections": [
+            "financial review",
+            "results of operations",
+            "management discussion",
+            "management discussion and analysis",
+            "md&a",
+            "mda",
+            "financial statements",
+            "财务报告",
+            "管理层讨论与分析",
+            "公司简介和主要财务指标",
+            "主要财务指标",
+            "财务报表",
+            "财务报表附注",
+            "经营业绩",
+            "经营情况",
+            "现金流量",
+            "overview",
+        ],
+    },
+    "capacity": {
+        "keywords": ["capacity", "manufacturing", "production", "installed", "deployment", "gw", "mwh", "产能", "装机", "制造", "部署"],
+        "rewrite": [
+            "capacity",
+            "manufacturing capacity",
+            "production",
+            "deployment",
+            "installed capacity",
+            "operations",
+        ],
+        "rerank": ["capacity", "manufacturing", "production", "installed", "deployment", "gw", "mwh"],
+        "sections": ["capacity", "manufacturing", "production", "operations"],
+    },
+    "market": {
+        "keywords": ["market", "region", "overseas", "international", "global", "country", "市场", "海外", "地区"],
+        "rewrite": [
+            "market",
+            "region",
+            "geographic",
+            "international",
+            "overseas",
+            "segment",
+        ],
+        "rerank": ["market", "region", "geographic", "international", "overseas", "country", "segment"],
+        "sections": ["market", "region", "geographic", "segment"],
+    },
+    "technology": {
+        "keywords": ["technology", "product", "solution", "platform", "roadmap", "r&d", "innov", "技术", "产品", "解决方案", "技术路线"],
+        "rewrite": [
+            "technology",
+            "product",
+            "solution",
+            "platform",
+            "research and development",
+            "roadmap",
+        ],
+        "rerank": ["technology", "product", "solution", "platform", "research", "development", "roadmap"],
+        "sections": ["technology", "product", "solution", "research", "development"],
+    },
+    "project": {
+        "keywords": ["project", "order", "contract", "agreement", "partner", "cooperation", "delivery", "项目", "订单", "合作"],
+        "rewrite": [
+            "project",
+            "order",
+            "contract",
+            "agreement",
+            "delivery",
+            "pipeline",
+            "partner",
+        ],
+        "rerank": ["project", "order", "contract", "agreement", "delivery", "pipeline", "partner"],
+        "sections": ["project", "order", "contract", "delivery", "pipeline"],
+    },
 }
 
-QUESTION_CATEGORY_KEYWORDS: dict[str, list[str]] = {
-    "financial": ["revenue", "income", "profit", "earnings", "margin", "financial", "收入", "营收", "利润", "财务", "经营结果"],
-    "capacity": ["capacity", "manufacturing", "production", "installed", "deployment", "gw", "mwh", "产能", "装机", "制造", "部署"],
-    "market": ["market", "region", "overseas", "international", "global", "country", "市场", "海外", "地区"],
-    "technology": ["technology", "product", "solution", "platform", "roadmap", "r&d", "innov", "技术", "产品", "解决方案", "技术路线"],
-    "project": ["project", "order", "contract", "agreement", "partner", "cooperation", "delivery", "项目", "订单", "合作"],
-}
-
-QUERY_REWRITE_TERMS: dict[str, list[str]] = {
-    "financial": [
-        "revenue",
-        "net sales",
-        "gross profit",
-        "operating income",
-        "net income",
-        "financial review",
-        "results of operations",
-        "management discussion",
-    ],
-    "capacity": [
-        "capacity",
-        "manufacturing capacity",
-        "production",
-        "deployment",
-        "installed capacity",
-        "operations",
-    ],
-    "market": [
-        "market",
-        "region",
-        "geographic",
-        "international",
-        "overseas",
-        "segment",
-    ],
-    "technology": [
-        "technology",
-        "product",
-        "solution",
-        "platform",
-        "research and development",
-        "roadmap",
-    ],
-    "project": [
-        "project",
-        "order",
-        "contract",
-        "agreement",
-        "delivery",
-        "pipeline",
-        "partner",
-    ],
-}
-
-RERANK_CATEGORY_TERMS: dict[str, list[str]] = {
-    "financial": ["revenue", "net sales", "gross profit", "operating income", "net income", "results of operations", "financial review"],
-    "capacity": ["capacity", "manufacturing", "production", "installed", "deployment", "gw", "mwh"],
-    "market": ["market", "region", "geographic", "international", "overseas", "country", "segment"],
-    "technology": ["technology", "product", "solution", "platform", "research", "development", "roadmap"],
-    "project": ["project", "order", "contract", "agreement", "delivery", "pipeline", "partner"],
-}
-
-PREFERRED_SECTION_TERMS: dict[str, list[str]] = {
-    "financial": [
-        "financial review",
-        "results of operations",
-        "management discussion",
-        "management discussion and analysis",
-        "md&a",
-        "mda",
-        "financial statements",
-        "财务报告",
-        "管理层讨论与分析",
-        "公司简介和主要财务指标",
-        "主要财务指标",
-        "财务报表",
-        "财务报表附注",
-        "经营业绩",
-        "经营情况",
-        "现金流量",
-        "overview",
-    ],
-    "capacity": ["capacity", "manufacturing", "production", "operations"],
-    "market": ["market", "region", "geographic", "segment"],
-    "technology": ["technology", "product", "solution", "research", "development"],
-    "project": ["project", "order", "contract", "delivery", "pipeline"],
-}
+# Backward-compatible read-only views derived from CATEGORY_CONFIG.
+QUESTION_CATEGORY_KEYWORDS: dict[str, list[str]] = {c: cfg["keywords"] for c, cfg in CATEGORY_CONFIG.items()}
+QUERY_REWRITE_TERMS: dict[str, list[str]] = {c: cfg["rewrite"] for c, cfg in CATEGORY_CONFIG.items()}
+RERANK_CATEGORY_TERMS: dict[str, list[str]] = {c: cfg["rerank"] for c, cfg in CATEGORY_CONFIG.items()}
+PREFERRED_SECTION_TERMS: dict[str, list[str]] = {c: cfg["sections"] for c, cfg in CATEGORY_CONFIG.items()}
 
 NOISY_SECTION_TERMS = [
     "notes to consolidated financial statements",
@@ -231,30 +239,41 @@ FINANCIAL_METRIC_LABELS = [
     "加权平均净资产收益率",
 ]
 
-DOCUMENT_HINTS: dict[str, list[str]] = {
-    "宁德时代": ["catl"],
-    "catl": ["catl"],
-    "比亚迪": ["byd"],
-    "byd": ["byd"],
-    "阳光电源": ["sungrow"],
-    "sungrow": ["sungrow"],
-    "隆基": ["longi"],
-    "隆基绿能": ["longi"],
-    "longi": ["longi"],
-    "特斯拉": ["tesla"],
-    "tesla": ["tesla"],
-    "第一太阳能": ["first solar"],
-    "first solar": ["first solar"],
-    "iea": ["iea"],
-    "国际能源署": ["iea"],
-    "irena": ["irena"],
-    "国际可再生能源署": ["irena"],
-    "vestas": ["vestas"],
-    "维斯塔斯": ["vestas"],
-    "nordex": ["nordex"],
-    "siemens gamesa": ["siemens"],
-    "gamesa": ["siemens"],
-}
+# Version tag for the answer post-processing / direct-fact pipeline.
+# Bump this whenever correction logic changes so cached answers invalidate.
+ANSWER_PIPELINE_VERSION = "3"
+
+# Company-agnostic metrics for the direct table-extraction path.
+# Each entry maps generic question intent (bilingual triggers) to the row
+# labels that may carry the value in a table, plus a display label per
+# language. Add metrics here instead of hand-writing per-question if-branches.
+DIRECT_FACT_METRICS: list[dict[str, Any]] = [
+    {
+        "triggers": ["total revenue", "total revenues", "营业收入", "总营收", "总收入"],
+        "row_patterns": [r"Total revenues", r"Revenue", r"营业收入", r"营业总收入"],
+        "label_en": "total revenues",
+        "label_zh": "营业收入",
+    },
+    {
+        "triggers": ["net income", "净利润"],
+        "row_patterns": [
+            r"Net income attributable to common stockholders",
+            r"Net income",
+            r"归属于上市公司股东的净利润",
+            r"净利润",
+        ],
+        "label_en": "net income",
+        "label_zh": "净利润",
+    },
+    {
+        "triggers": ["research and development", "r&d", "研发", "研究与开发"],
+        "row_patterns": [r"Research and development", r"研发费用", r"研发投入"],
+        "label_en": "research and development",
+        "label_zh": "研发投入",
+    },
+]
+
+DOCUMENT_HINTS: dict[str, list[str]] = _QUERY_ALIASES["document_hints"]
 
 
 @dataclass(slots=True)
@@ -289,6 +308,15 @@ class RetrievalHit:
     chunk: ChunkRecord
     matched_terms: list[str]
     reason: str
+
+
+@dataclass(slots=True)
+class ComposedAnswer:
+    answer: str
+    backend: str
+    used_llm: bool
+    grounded: bool
+    ungrounded_numbers: list[str]
 
 
 @dataclass(slots=True)
@@ -419,6 +447,9 @@ class RetrievalService:
         return self._hash_json(
             {
                 "retrieval": self._retrieval_strategy_fingerprint(top_k),
+                # Bump when answer post-processing / direct-fact logic changes,
+                # so previously cached answers don't outlive the change.
+                "answer_pipeline_version": ANSWER_PIPELINE_VERSION,
                 **{key: os.getenv(key, "") for key in keys},
             }
         )
@@ -1548,44 +1579,81 @@ class RetrievalService:
             normalized.add(token)
         return normalized
 
-    def _numbers_grounded(self, answer: str, hits: Sequence[RetrievalHit]) -> bool:
-        answer_numbers = self._extract_numbers(answer)
-        if not answer_numbers:
-            return True
-        evidence_text = " ".join(hit.chunk.text for hit in hits)
-        evidence_numbers = self._extract_numbers(evidence_text)
-        return answer_numbers.issubset(evidence_numbers)
+    @staticmethod
+    def _to_float(token: str) -> float | None:
+        try:
+            return float(token.replace(",", "").rstrip("%"))
+        except ValueError:
+            return None
 
-    def _soft_number_guard(self, answer: str, hits: Sequence[RetrievalHit]) -> tuple[str, bool]:
+    def _number_grounded_in_evidence(self, value: float, evidence: Sequence[float]) -> bool:
+        """A number is considered grounded if it appears in evidence directly,
+        after rounding, or after a common unit scaling (万/亿/million/billion)."""
+        for ev in evidence:
+            # Exact or rounding tolerance (handles 48 vs 48.2, 1% relative drift).
+            if abs(value - ev) <= max(0.5, abs(ev) * 0.01):
+                return True
+            # Unit conversion: e.g. answer "500" (亿) vs evidence "50,000" (百万).
+            for factor in (1e2, 1e3, 1e4, 1e6, 1e8):
+                hi, lo = (value, ev) if value >= ev else (ev, value)
+                if lo and abs(hi - lo * factor) <= max(0.5, hi * 0.01):
+                    return True
+        return False
+
+    def _check_number_grounding(
+        self, answer: str, hits: Sequence[RetrievalHit]
+    ) -> tuple[bool, list[str]]:
+        """Detect-only grounding check. Never mutates the answer — it reports
+        which numbers are not backed by evidence so callers can log/flag them."""
         if not answer:
-            return answer, True
-        evidence_text = " ".join(hit.chunk.text for hit in hits)
-        evidence_numbers = self._extract_numbers(evidence_text)
-        if not evidence_numbers:
-            return answer, True
-
+            return True, []
         pattern = re.compile(r"(?<!\d)\d+(?:,\d{3})*(?:\.\d+)?%?(?!\d)")
-        removed: list[str] = []
-
-        def repl(match: re.Match[str]) -> str:
-            token = match.group(0)
-            normalized = token.replace(",", "")
-            if normalized in evidence_numbers:
-                return token
-            removed.append(token)
-            return ""
-
-        cleaned = pattern.sub(repl, answer)
-        cleaned = re.sub(r"\s{2,}", " ", cleaned).strip()
-        if removed:
-            cleaned = cleaned.rstrip() + "\n\n注：已移除未在证据中出现的数值。"
-        return cleaned, not removed
+        answer_tokens = pattern.findall(answer)
+        if not answer_tokens:
+            return True, []
+        evidence_text = " ".join(hit.chunk.text for hit in hits)
+        evidence_floats = [
+            f for f in (self._to_float(t) for t in pattern.findall(evidence_text))
+            if f is not None
+        ]
+        if not evidence_floats:
+            return True, []
+        ungrounded: list[str] = []
+        for token in answer_tokens:
+            value = self._to_float(token)
+            if value is None:
+                continue
+            if not self._number_grounded_in_evidence(value, evidence_floats):
+                ungrounded.append(token)
+        return (not ungrounded), ungrounded
 
     @staticmethod
     def _sanitize_citations(answer: str, source_count: int) -> str:
         if not answer:
             return answer
         cleaned = re.sub(r"\[\s*\]", "", answer)
+
+        # Citation ranges like "[5]至[9]": keep only the in-range endpoints and
+        # drop the connector only when an endpoint is dropped. This avoids
+        # corrupting ordinary range text such as "2020至2023年".
+        def range_repl(match: re.Match[str]) -> str:
+            a, b = int(match.group(1)), int(match.group(3))
+            a_ok = 1 <= a <= source_count
+            b_ok = 1 <= b <= source_count
+            if a_ok and b_ok:
+                return match.group(0)
+            if a_ok:
+                return f"[{a}]"
+            if b_ok:
+                return f"[{b}]"
+            return ""
+
+        cleaned = re.sub(
+            r"\[(\d+)\]\s*(至|到|through)\s*\[(\d+)\]",
+            range_repl,
+            cleaned,
+            flags=re.IGNORECASE,
+        )
 
         def repl(match: re.Match[str]) -> str:
             citation_number = int(match.group(1))
@@ -1594,7 +1662,6 @@ class RetrievalService:
             return ""
 
         cleaned = re.sub(r"\[(\d+)\]", repl, cleaned)
-        cleaned = re.sub(r"(?:至|到|through)\s*(?=[,.;，。；\s]|$)", "", cleaned, flags=re.IGNORECASE)
         cleaned = re.sub(r"\s+([,.;，。；])", r"\1", cleaned)
         cleaned = re.sub(r"[ \t]{2,}", " ", cleaned)
         cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
@@ -1683,44 +1750,20 @@ class RetrievalService:
                         return values[value_index], idx, label
             return None
 
-        if target_year and "deliver" in q and "vehicle" in q:
-            for idx, hit in enumerate(hits, start=1):
-                text = " ".join(hit.chunk.text.split())
-                pattern = rf"\b{target_year}\b[^.]*?\bdelivered\s+(?:approximately\s+)?([\d,]+)\s+consumer vehicles"
-                match = re.search(pattern, text, flags=re.IGNORECASE)
-                if match:
-                    return f"The company delivered {match.group(1)} consumer vehicles in {target_year} [{idx}]."
+        is_chinese = bool(re.search(r"[一-鿿]", question))
 
-        metric_patterns: list[tuple[bool, str, list[str]]] = [
-            (
-                "automotive" in q and ("revenue" in q or "revenues" in q),
-                "total automotive revenues",
-                [r"Total automotive revenues", r"Automotive segment Revenues"],
-            ),
-            (
-                "total revenue" in q or "total revenues" in q,
-                "total revenues",
-                [r"Total revenues", r"Revenue"],
-            ),
-            (
-                "net income" in q,
-                "net income",
-                [r"Net income attributable to common stockholders", r"Net income"],
-            ),
-            (
-                "research and development" in q or "r&d" in q,
-                "research and development",
-                [r"Research and development"],
-            ),
-        ]
-        for applies, label, patterns in metric_patterns:
-            if not applies:
+        for metric in DIRECT_FACT_METRICS:
+            if not any(trigger in q for trigger in metric["triggers"]):
                 continue
-            found = row_value(patterns)
-            if found:
-                value, idx, matched_label = found
-                unit = " million" if "," in value or value.isdigit() else ""
-                return f"The {label} figure for {target_year or 'the requested period'} was ${value}{unit} [{idx}] (matched row: {matched_label})."
+            found = row_value(metric["row_patterns"])
+            if not found:
+                continue
+            value, idx, matched_label = found
+            if is_chinese:
+                period = target_year + "年" if target_year else "所询问期间"
+                return f"{period}{metric['label_zh']}为 {value}（来源 [{idx}]，匹配行：{matched_label}）。"
+            period = target_year or "the requested period"
+            return f"The {metric['label_en']} for {period} was {value} [{idx}] (matched row: {matched_label})."
 
         return None
 
@@ -1986,6 +2029,50 @@ class RetrievalService:
         except Exception as exc:
             self._last_answer_cache_stats.update({"write_error": str(exc)})
 
+    def _compose_answer(
+        self,
+        question: str,
+        hits: Sequence[RetrievalHit],
+        prompt: str,
+        financial_facts: str,
+    ) -> ComposedAnswer:
+        """Single answer pipeline. Stages run in a fixed order so the three
+        number-handling mechanisms can no longer interleave unpredictably:
+
+          1. generate   — direct-fact → LLM → extractive (mutually exclusive)
+          2. ground     — detect-only check, never mutates the generated text
+          3. enrich     — if ungrounded, append grounded metrics (non-mutating)
+          4. sanitize   — clean up citation markers
+
+        Returns the text plus provenance/grounding metadata.
+        """
+        # ── Stage 1: generate (exactly one source wins) ───────────────────
+        direct_answer = self._direct_fact_answer(question, hits)
+        if direct_answer:
+            answer, backend, used_llm = direct_answer, "direct-extractive", False
+        else:
+            llm_answer, backend = self._call_llm(prompt)
+            if llm_answer and llm_answer.strip():
+                answer, used_llm = llm_answer, True
+            else:
+                answer, backend, used_llm = self._extractive_answer(question, hits), "extractive", False
+
+        # ── Stage 2: ground-check (detect only) ───────────────────────────
+        # Direct-fact answers are extracted verbatim from evidence rows, so
+        # they are grounded by construction.
+        if backend == "direct-extractive":
+            grounded, ungrounded_numbers = True, []
+        else:
+            grounded, ungrounded_numbers = self._check_number_grounding(answer, hits)
+
+        # ── Stage 3: enrich (never mutate the generated numbers) ───────────
+        if not grounded and financial_facts:
+            answer = answer.rstrip() + "\n\n指标摘录（来自证据）：\n" + financial_facts
+
+        # ── Stage 4: sanitize citations ───────────────────────────────────
+        answer = self._sanitize_citations(answer, len(hits))
+        return ComposedAnswer(answer, backend, used_llm, grounded, ungrounded_numbers)
+
     def answer(self, question: str, top_k: int = 6) -> AnswerResult:
         started = time.perf_counter()
         cached_answer = self._fetch_answer_cache(question, top_k)
@@ -1995,26 +2082,12 @@ class RetrievalService:
         metrics, unit = self._extract_financial_metrics(hits, question)
         financial_facts = self._render_financial_metrics(metrics, unit)
         prompt = self.build_prompt(question, hits, financial_facts or None)
-        direct_answer = self._direct_fact_answer(question, hits)
-        if direct_answer:
-            answer = direct_answer
-            llm_backend = "direct-extractive"
-            used_llm = False
-        else:
-            llm_answer, llm_backend = self._call_llm(prompt)
-            used_llm = llm_answer is not None
-            if llm_answer:
-                answer, grounded = self._soft_number_guard(llm_answer, hits)
-                if not answer.strip():
-                    answer = self._extractive_answer(question, hits)
-                    used_llm = False
-                    llm_backend = "extractive"
-                elif not grounded and financial_facts:
-                    answer = answer.rstrip() + "\n\n指标摘录（来自证据）：\n" + financial_facts
-            else:
-                answer = self._extractive_answer(question, hits)
-                llm_backend = "extractive"
-        answer = self._sanitize_citations(answer, len(hits))
+        composed = self._compose_answer(question, hits, prompt, financial_facts)
+        answer = composed.answer
+        llm_backend = composed.backend
+        used_llm = composed.used_llm
+        grounded = composed.grounded
+        ungrounded_numbers = composed.ungrounded_numbers
         sources = [f"[{idx}] {hit.chunk.citation}" for idx,
                    hit in enumerate(hits, start=1)]
         latency_ms = (time.perf_counter() - started) * 1000.0
@@ -2044,6 +2117,8 @@ class RetrievalService:
             used_llm=used_llm,
             debug={
                 "top_k": top_k,
+                "answer_grounded": grounded,
+                "ungrounded_numbers": ungrounded_numbers,
                 "llm_backend": llm_backend,
                 "llm_backend_config": os.getenv("RAG_LLM_BACKEND", "auto"),
                 "claude_model": os.getenv("CLAUDE_MODEL", "claude-haiku-4-5-20251001"),

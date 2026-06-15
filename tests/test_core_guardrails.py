@@ -30,43 +30,65 @@ def _hit(text: str, title: str = "Tesla 2023 Annual Report 10-K", page: int = 51
     )
 
 
-def test_direct_extracts_total_automotive_revenues() -> None:
+def test_direct_extracts_total_revenue_generic() -> None:
+    # Generic, company-agnostic table extraction (no Tesla-specific branch).
     service = RetrievalService.__new__(RetrievalService)
     text = (
-        "Tesla, Inc. Consolidated Statements of Operations (in millions) "
-        "Year Ended December 31, 2023 2022 2021 Revenues "
-        "Automotive sales $ 78,509 $ 67,210 $ 44,125 "
-        "Automotive regulatory credits 1,790 1,776 1,465 "
-        "Automotive leasing 2,120 2,476 1,642 "
-        "Total automotive revenues 82,419 71,462 47,232 "
-        "Total revenues 96,773 81,462 53,823"
+        "Consolidated Statements of Operations (in millions) "
+        "Year Ended December 31, 2023 2022 2021 "
+        "Total revenues 96,773 81,462 53,823 "
+        "Net income attributable to common stockholders 14,997 12,556 5,519"
     )
 
     answer = service._direct_fact_answer(
-        "What was Tesla's automotive revenue in 2023?",
+        "What was the total revenue in 2023?",
         [_hit(text)],
     )
 
     assert answer is not None
-    assert "82,419" in answer
-    assert "Total automotive" in answer or "total automotive" in answer
+    assert "96,773" in answer
+    assert "total revenues" in answer.lower()
+    # No fabricated currency/unit any more — only the extracted value.
+    assert "$" not in answer
+    assert "million" not in answer
 
 
-def test_direct_extracts_delivered_consumer_vehicles() -> None:
+def test_direct_fact_answers_in_question_language() -> None:
     service = RetrievalService.__new__(RetrievalService)
-    text = (
-        "Overview and 2023 Highlights. In 2023, we produced 1,845,985 "
-        "consumer vehicles and delivered 1,808,581 consumer vehicles."
-    )
+    text = "主要财务指标 2023 2022 营业收入 4,009 3,285 净利润 441 307"
 
-    answer = service._direct_fact_answer(
-        "How many vehicles did Tesla deliver in 2023?",
-        [_hit(text, page=34)],
-    )
+    answer = service._direct_fact_answer("2023年营业收入是多少？", [_hit(text)])
 
     assert answer is not None
-    assert "1,808,581" in answer
-    assert "473,382" not in answer
+    assert "4,009" in answer
+    assert "营业收入" in answer
+    # Chinese question → Chinese answer (prompt rule 6).
+    assert "The" not in answer
+
+
+def test_number_grounding_allows_rounding_and_unit_scaling() -> None:
+    service = RetrievalService.__new__(RetrievalService)
+    hits = [_hit("Revenue was 50,000 million, with a margin of 48.2%.")]
+
+    # 500 (亿) scales to 50,000 (百万); 48 rounds from 48.2 — both grounded.
+    grounded, ungrounded = service._check_number_grounding(
+        "营收约 500 亿，毛利率约 48%。", hits
+    )
+
+    assert grounded
+    assert ungrounded == []
+
+
+def test_number_grounding_flags_fabricated_number() -> None:
+    service = RetrievalService.__new__(RetrievalService)
+    hits = [_hit("Revenue was 50,000 million.")]
+
+    grounded, ungrounded = service._check_number_grounding(
+        "Revenue was 999 million.", hits
+    )
+
+    assert not grounded
+    assert "999" in ungrounded
 
 
 def test_sanitize_citations_removes_empty_and_out_of_range_refs() -> None:
@@ -77,6 +99,22 @@ def test_sanitize_citations_removes_empty_and_out_of_range_refs() -> None:
     assert "[]" not in cleaned
     assert "[9]" not in cleaned
     assert "[1]" in cleaned
+
+
+def test_sanitize_preserves_plain_text_ranges() -> None:
+    # Ordinary "至" between years must NOT be stripped.
+    cleaned = RetrievalService._sanitize_citations("2020至2023年累计装机 [1]", source_count=3)
+
+    assert "2020至2023年累计装机" in cleaned
+    assert "[1]" in cleaned
+
+
+def test_sanitize_trims_out_of_range_citation_range() -> None:
+    cleaned = RetrievalService._sanitize_citations("见 [2]至[9] 资料", source_count=3)
+
+    assert "[2]" in cleaned
+    assert "[9]" not in cleaned
+    assert "至" not in cleaned
 
 
 def test_supercharger_case_does_not_expect_missing_station_count() -> None:

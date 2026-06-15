@@ -150,6 +150,8 @@ def run_eval(eval_set_name: str = "energy_starter_v1", top_k: int = 6) -> dict[s
         answer_score = _answer_overlap(result.answer, case.get("gold_answer") or "")
         citation_score = _citation_score(result.sources, gold_citations, metadata)
         pass_fail = retrieval_score > 0 and citation_score >= 0.5 and answer_score >= 0.15
+        grounded = bool(result.debug.get("answer_grounded", True))
+        ungrounded_numbers = list(result.debug.get("ungrounded_numbers") or [])
 
         _insert_filtered(
             db,
@@ -181,6 +183,8 @@ def run_eval(eval_set_name: str = "energy_starter_v1", top_k: int = 6) -> dict[s
                 "answer_score": round(answer_score, 4),
                 "citation_score": round(citation_score, 4),
                 "pass_fail": pass_fail,
+                "grounded": grounded,
+                "ungrounded_numbers": ungrounded_numbers,
             }
         )
 
@@ -196,6 +200,9 @@ def run_eval(eval_set_name: str = "energy_starter_v1", top_k: int = 6) -> dict[s
         "answer_mean": round(sum(r["answer_score"] for r in rows) / len(rows), 4),
         "citation_mean": round(sum(r["citation_score"] for r in rows) / len(rows), 4),
         "pass_rate": round(sum(1 for r in rows if r["pass_fail"]) / len(rows), 4),
+        # Fraction of answers containing at least one number not backed by
+        # evidence. Model-agnostic hallucination signal — no gold answer needed.
+        "ungrounded_rate": round(sum(1 for r in rows if not r["grounded"]) / len(rows), 4),
         "samples": rows[:5],
     }
 
@@ -218,6 +225,7 @@ def main() -> None:
         print(f"answer_mean: {summary['answer_mean']}")
         print(f"citation_mean: {summary['citation_mean']}")
         print(f"pass_rate: {summary['pass_rate']}")
+        print(f"ungrounded_rate: {summary['ungrounded_rate']}")
         for sample in summary["samples"]:
             print(
                 f"- {sample['question']} :: retrieval={sample['retrieval_score']:.3f} "
