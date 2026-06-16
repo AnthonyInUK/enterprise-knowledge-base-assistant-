@@ -34,6 +34,7 @@ from dotenv import load_dotenv
 from scripts.ingest_energy_data import (
     ParagraphBlock,
     PdfBlock,
+    clean_chunk_text,
     embed_text,
     extract_pdf_document,
     normalize_whitespace,
@@ -55,6 +56,7 @@ load_dotenv()
 def parser_fingerprint() -> str:
     payload = {
         "parser": "ingest_single_pdf.extract_pdf_document",
+        "parser_version": "fitz-tables-clean-v2",  # bump when parsing logic changes
         "chunk_max_words": CHUNK_MAX_WORDS,
         "chunk_overlap": CHUNK_OVERLAP,
     }
@@ -320,9 +322,9 @@ def ingest_pdf(
                             )
                         )
 
-                chapter_text = normalize_whitespace(
+                chapter_text = clean_chunk_text(normalize_whitespace(
                     "\n\n".join(p.text for p in paragraph_chunks)
-                )
+                ))
                 if not chapter_text:
                     continue
 

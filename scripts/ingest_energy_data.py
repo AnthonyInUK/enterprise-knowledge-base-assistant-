@@ -336,6 +336,58 @@ def clean_pdf_pages(raw_pages: list[str]) -> tuple[list[PdfBlock], dict[str, int
     return cleaned_pages, stats
 
 
+def append_structured_tables(pdf_path: Path, blocks: list[PdfBlock]) -> int:
+    """Append fitz-reconstructed tables to each page block.
+
+    pdftotext -layout scrambles multi-column financial tables, detaching a
+    label from its numbers (e.g. "Net income attributable to common
+    stockholders" ends up next to the wrong figure). PyMuPDF's find_tables
+    rebuilds the actual grid from line/char positions, so we append each table
+    row as a single line — label glued to its values, never split across a
+    chunk: "Research and development | 3,969 | 3,075 | 2,593".
+
+    Prose still comes from pdftotext; this only adds structured table rows.
+    Never raises — any failure leaves the block's text unchanged.
+    """
+    try:
+        import fitz  # PyMuPDF, already a dependency
+    except Exception:
+        return 0
+    try:
+        doc = fitz.open(pdf_path)
+    except Exception:
+        return 0
+    appended = 0
+    try:
+        for block in blocks:
+            index = block.page_number - 1
+            if index < 0 or index >= len(doc):
+                continue
+            try:
+                tables = doc[index].find_tables()
+            except Exception:
+                continue
+            serialized: list[str] = []
+            for table in tables.tables:
+                try:
+                    rows = table.extract()
+                except Exception:
+                    continue
+                lines = []
+                for row in rows:
+                    cells = [" ".join((cell or "").split()) for cell in row]
+                    if any(cells):
+                        lines.append(" | ".join(cells))
+                if lines:
+                    serialized.append("\n".join(lines))
+            if serialized:
+                block.text = block.text + "\n\n[TABLE]\n" + "\n\n[TABLE]\n".join(serialized)
+                appended += len(serialized)
+    finally:
+        doc.close()
+    return appended
+
+
 def extract_pdf_document(pdf_path: Path) -> tuple[list[PdfBlock], str, bool, str, int, int, dict[str, int | float]]:
     pdftotext_pages = extract_pdf_pages_pdftotext(pdf_path)
     pdftotext_text = normalize_whitespace("\n\n".join(
@@ -351,6 +403,7 @@ def extract_pdf_document(pdf_path: Path) -> tuple[list[PdfBlock], str, bool, str
 
     if text_extract_chars >= threshold_chars:
         cleaned_blocks, cleaning_stats = clean_pdf_pages(pdftotext_pages)
+        table_count = append_structured_tables(pdf_path, cleaned_blocks)
         quality_score = min(1.0, text_density / 1200.0)
         return (
             cleaned_blocks,
@@ -363,6 +416,7 @@ def extract_pdf_document(pdf_path: Path) -> tuple[list[PdfBlock], str, bool, str
                 "page_count": page_count,
                 "text_page_count": len(cleaned_blocks),
                 "ocr_page_count": 0,
+                "structured_tables": table_count,
                 "quality_score": round(quality_score, 4),
                 "needs_review": quality_score < 0.15,
                 **cleaning_stats,
@@ -393,6 +447,7 @@ def extract_pdf_document(pdf_path: Path) -> tuple[list[PdfBlock], str, bool, str
         )
 
     cleaned_blocks, cleaning_stats = clean_pdf_pages(pdftotext_pages)
+    table_count = append_structured_tables(pdf_path, cleaned_blocks)
     quality_score = min(1.0, text_density / 1200.0)
     return (
         cleaned_blocks,
@@ -405,6 +460,7 @@ def extract_pdf_document(pdf_path: Path) -> tuple[list[PdfBlock], str, bool, str
             "page_count": page_count,
             "text_page_count": len(cleaned_blocks),
             "ocr_page_count": 0,
+            "structured_tables": table_count,
             "quality_score": round(quality_score, 4),
             "needs_review": True,
             **cleaning_stats,
@@ -473,21 +529,54 @@ def is_heading_paragraph(paragraph: str) -> bool:
     return False
 
 
-def split_paragraph_text(paragraph: str, max_words: int = 180, overlap: int = 35) -> list[str]:
+def clean_chunk_text(text: str, max_token_len: int = 120) -> str:
+    """Drop retrieval-noise tokens and tame size-busting ones before chunking.
+
+    Token-based (robust to escaped quotes in scraped HTML/JSON):
+    - A whitespace-free token longer than max_token_len that looks like config
+      (quotes, ":" pairs, or a URL) is embedded JSON / nav-blob noise scraped
+      from HTML (e.g. Sungrow's index.html) — drop it; it is not prose and a
+      single such token can be 1000+ chars.
+    - Any other over-long run (e.g. a bare URL) is hard-wrapped so one token
+      can't blow past the size bound and defeat word-count splitting.
+    """
+    kept: list[str] = []
+    for token in text.split():
+        if len(token) > max_token_len:
+            looks_like_config = ('"' in token) or (":" in token) or ("http" in token)
+            if looks_like_config:
+                continue
+            kept.extend(token[i:i + max_token_len] for i in range(0, len(token), max_token_len))
+        else:
+            kept.append(token)
+    return " ".join(kept)
+
+
+def split_paragraph_text(
+    paragraph: str, max_words: int = 180, overlap: int = 35, max_chars: int = 2400
+) -> list[str]:
+    paragraph = clean_chunk_text(paragraph)
     words = paragraph.split()
-    if len(words) <= max_words:
+    if not words:
+        return []
+    if len(words) <= max_words and len(paragraph) <= max_chars:
         return [paragraph]
 
     chunks: list[str] = []
     cursor = 0
     while cursor < len(words):
         window = words[cursor: cursor + max_words]
+        while len(window) > 1 and len(" ".join(window)) > max_chars:
+            window = window[:-1]
         chunk_text = " ".join(window).strip()
         if chunk_text:
             chunks.append(chunk_text)
-        if cursor + max_words >= len(words):
+        if cursor + len(window) >= len(words):
             break
-        cursor += max(1, max_words - overlap)
+        # Keep overlap below the window so the cursor always makes real progress
+        # (avoids hundreds of near-duplicate chunks when the window is small).
+        step = max(1, len(window) - min(overlap, len(window) // 2))
+        cursor += step
 
     return chunks
 
@@ -867,11 +956,11 @@ def main() -> None:
                                     )
                                 )
 
-                    chapter_text = normalize_whitespace(
+                    chapter_text = clean_chunk_text(normalize_whitespace(
                         "\n\n".join(chunk.text for chunk in paragraph_chunks)
                         if paragraph_chunks
                         else "\n\n".join(paragraph.text for paragraph in section.paragraphs)
-                    )
+                    ))
                     if not chapter_text:
                         continue
 
