@@ -1,0 +1,2614 @@
+{
+  "generated_at": "2026-06-16 11:21:40",
+  "dataset": "/Users/anthony/Desktop/llm/enterprise-knowledge-base-assistant/.claude/worktrees/hopeful-wilbur-fcdace/data/golden_dataset.json",
+  "top_k": 5,
+  "n_cases": 51,
+  "metrics": {
+    "bm25": {
+      "strategy": "bm25",
+      "label": "BM25-only      (TF-IDF 关键词)",
+      "n": 51,
+      "hit_at_1": 0.7451,
+      "hit_at_3": 1.0,
+      "hit_at_5": 1.0,
+      "mrr": 0.8693,
+      "ndcg_at_5": 0.9034,
+      "page_hit_at_5": 1.0,
+      "mean_latency_ms": 141.4,
+      "keyword_hit_rate": 0.8235
+    },
+    "vector": {
+      "strategy": "vector",
+      "label": "Vector-only    (pgvector ANN)",
+      "n": 51,
+      "hit_at_1": 0.8824,
+      "hit_at_3": 0.9412,
+      "hit_at_5": 0.9608,
+      "mrr": 0.9134,
+      "ndcg_at_5": 0.9253,
+      "page_hit_at_5": 0.9412,
+      "mean_latency_ms": 389.4,
+      "keyword_hit_rate": 0.8235
+    },
+    "hybrid": {
+      "strategy": "hybrid",
+      "label": "Hybrid         (BM25 + Vector, no rerank)",
+      "n": 51,
+      "hit_at_1": 0.8235,
+      "hit_at_3": 1.0,
+      "hit_at_5": 1.0,
+      "mrr": 0.9052,
+      "ndcg_at_5": 0.9297,
+      "page_hit_at_5": 1.0,
+      "mean_latency_ms": 130.5,
+      "keyword_hit_rate": 0.8235
+    },
+    "full": {
+      "strategy": "full",
+      "label": "Hybrid+Rerank  (生产配置 ★)",
+      "n": 51,
+      "hit_at_1": 0.8235,
+      "hit_at_3": 1.0,
+      "hit_at_5": 1.0,
+      "mrr": 0.9052,
+      "ndcg_at_5": 0.9297,
+      "page_hit_at_5": 1.0,
+      "mean_latency_ms": 171.3,
+      "keyword_hit_rate": 0.8627
+    }
+  },
+  "case_details": {
+    "bm25": [
+      {
+        "case_id": "tesla_2023_001",
+        "question": "What was Tesla's total revenue in fiscal year 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 2100.4,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_002",
+        "question": "What was Tesla's automotive revenue in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 103.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_003",
+        "question": "How many vehicles did Tesla deliver in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 97.6,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "tesla_2023_004",
+        "question": "What was Tesla's net income attributable to common stockholders in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 93.8,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_005",
+        "question": "How much did Tesla invest in research and development in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 94.9,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_006",
+        "question": "What was Tesla's energy generation and storage segment revenue in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 95.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_007",
+        "question": "What was Tesla's overall gross margin percentage in fiscal year 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 3,
+        "page_rank": 3,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 94.2,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_008",
+        "question": "What does Tesla say about its Supercharger network?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 97.4,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_009",
+        "question": "What are Tesla's reportable business segments?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 95.0,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_010",
+        "question": "What are the key risk factors Tesla disclosed in its 2023 annual report?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 98.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2024_001",
+        "question": "What was Tesla's total revenue in 2024?",
+        "gold_doc": "Tesla 2024 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 93.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2024_002",
+        "question": "How many vehicles did Tesla deliver in 2024?",
+        "gold_doc": "Tesla 2024 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 89.4,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2024_003",
+        "question": "What is Tesla's Optimus humanoid robot and its development status?",
+        "gold_doc": "Tesla 2024 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 98.3,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "vestas_2023_001",
+        "question": "What was Vestas' total revenue in 2023?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 51.9,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_002",
+        "question": "What was Vestas EBIT (operating profit) in 2023?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 58.2,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_003",
+        "question": "What was Vestas' EBIT margin percentage in 2023?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 3,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 92.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_004",
+        "question": "How many MW of wind turbines did Vestas deliver in 2023?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 81.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_005",
+        "question": "What is the size of Vestas' order backlog?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 39.0,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_006",
+        "question": "What is Vestas' service and maintenance business model?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 56.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2023_001",
+        "question": "宁德时代2023年营业收入是多少？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 133.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2023_002",
+        "question": "宁德时代2023年归属于上市公司股东的净利润是多少？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 123.8,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2023_003",
+        "question": "宁德时代CTP 3.0麒麟电池的主要技术优势是什么？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2023 Annual Report",
+          "CATL 2025 Annual Report"
+        ],
+        "latency_ms": 58.9,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2023_004",
+        "question": "宁德时代在欧洲建立了哪些生产基地？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 140.2,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "catl_2023_005",
+        "question": "宁德时代的换电品牌叫什么名字？其商业模式是什么？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 141.8,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "catl_2023_006",
+        "question": "宁德时代2023年研发费用及占营收比例是多少？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 142.3,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "catl_2025_001",
+        "question": "宁德时代最新年报（2024年度）中营业收入是多少？",
+        "gold_doc": "CATL 2025 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 140.4,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2025_002",
+        "question": "宁德时代在2024年推出了什么新电池技术或产品？",
+        "gold_doc": "CATL 2025 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 56.8,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2025_003",
+        "question": "宁德时代全球动力电池市场占有率排名如何？",
+        "gold_doc": "CATL 2025 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 58.8,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_001",
+        "question": "According to IRENA, what is the global renewable energy capacity target by 2030?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 36.0,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_002",
+        "question": "How much annual energy investment is required by 2030 according to IRENA's World Energy Transitions Outlook?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 54.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_003",
+        "question": "What share of global electricity generation should come from renewables by 2030 according to IRENA?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 38.0,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_004",
+        "question": "What does IRENA say about critical minerals supply chains for the energy transition?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 53.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_005",
+        "question": "What are the main barriers and challenges to accelerating the energy transition according to IRENA?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 51.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_renewables_001",
+        "question": "What is IEA's forecast for global solar capacity additions in 2025?",
+        "gold_doc": "IEA Renewables 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 54.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_renewables_002",
+        "question": "According to IEA, what percentage of global electricity comes from renewable sources?",
+        "gold_doc": "IEA Renewables 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 57.9,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_renewables_003",
+        "question": "Which countries are leading in renewable energy capacity additions according to IEA Renewables 2025?",
+        "gold_doc": "IEA Renewables 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 58.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_renewables_004",
+        "question": "What is IEA's outlook for wind energy deployment in 2025?",
+        "gold_doc": "IEA Renewables 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 56.0,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_electricity_001",
+        "question": "What does IEA forecast for global electricity demand growth in 2025?",
+        "gold_doc": "IEA Electricity Mid-Year Update 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Electricity Mid-Year Update 2025",
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 54.1,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_electricity_002",
+        "question": "How are data centers and AI contributing to electricity demand growth according to IEA?",
+        "gold_doc": "IEA Electricity Mid-Year Update 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Electricity Mid-Year Update 2025",
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 83.1,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_electricity_003",
+        "question": "What is IEA's mid-year assessment of China's electricity demand in 2025?",
+        "gold_doc": "IEA Electricity Mid-Year Update 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Electricity Mid-Year Update 2025"
+        ],
+        "latency_ms": 83.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "longi_001",
+        "question": "What is LONGi's total solar module shipment volume?",
+        "gold_doc": "LONGi Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "LONGi Investor Reports"
+        ],
+        "latency_ms": 202.2,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "longi_002",
+        "question": "What is LONGi's main solar cell technology and efficiency record?",
+        "gold_doc": "LONGi Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "LONGi Investor Reports"
+        ],
+        "latency_ms": 116.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "longi_003",
+        "question": "隆基绿能的主要营业收入来源是什么？",
+        "gold_doc": "LONGi Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "LONGi Investor Reports"
+        ],
+        "latency_ms": 218.1,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "longi_004",
+        "question": "What is LONGi's global market strategy and overseas expansion?",
+        "gold_doc": "LONGi Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "LONGi Investor Reports"
+        ],
+        "latency_ms": 91.8,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "firstsolar_001",
+        "question": "What makes First Solar's CdTe thin-film technology different from conventional silicon panels?",
+        "gold_doc": "First Solar Annual Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "First Solar Annual Reports"
+        ],
+        "latency_ms": 163.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "firstsolar_002",
+        "question": "Where does First Solar manufacture its solar panels?",
+        "gold_doc": "First Solar Annual Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "First Solar Annual Reports"
+        ],
+        "latency_ms": 364.2,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "firstsolar_003",
+        "question": "What is First Solar's competitive advantage against Chinese solar panel manufacturers?",
+        "gold_doc": "First Solar Annual Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "First Solar Annual Reports"
+        ],
+        "latency_ms": 369.2,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "sungrow_001",
+        "question": "What are Sungrow's main product lines and business segments?",
+        "gold_doc": "Sungrow Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Sungrow Investor Reports"
+        ],
+        "latency_ms": 268.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "sungrow_002",
+        "question": "阳光电源的储能业务收入占公司总收入的比例是多少？",
+        "gold_doc": "Sungrow Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Sungrow Investor Reports"
+        ],
+        "latency_ms": 39.7,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "byd_001",
+        "question": "What are BYD's main business segments?",
+        "gold_doc": "BYD Periodic Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "BYD Periodic Reports"
+        ],
+        "latency_ms": 33.6,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "byd_002",
+        "question": "BYD的新能源汽车2023年销售情况如何？",
+        "gold_doc": "BYD Periodic Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "BYD Periodic Reports"
+        ],
+        "latency_ms": 33.1,
+        "keyword_hit": false
+      }
+    ],
+    "vector": [
+      {
+        "case_id": "tesla_2023_001",
+        "question": "What was Tesla's total revenue in fiscal year 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 16636.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_002",
+        "question": "What was Tesla's automotive revenue in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 49.2,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_003",
+        "question": "How many vehicles did Tesla deliver in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 93.6,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "tesla_2023_004",
+        "question": "What was Tesla's net income attributable to common stockholders in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 102.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_005",
+        "question": "How much did Tesla invest in research and development in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 62.4,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_006",
+        "question": "What was Tesla's energy generation and storage segment revenue in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 89.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_007",
+        "question": "What was Tesla's overall gross margin percentage in fiscal year 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 43.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_008",
+        "question": "What does Tesla say about its Supercharger network?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 99.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_009",
+        "question": "What are Tesla's reportable business segments?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 49.2,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_010",
+        "question": "What are the key risk factors Tesla disclosed in its 2023 annual report?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 81.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2024_001",
+        "question": "What was Tesla's total revenue in 2024?",
+        "gold_doc": "Tesla 2024 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 72.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2024_002",
+        "question": "How many vehicles did Tesla deliver in 2024?",
+        "gold_doc": "Tesla 2024 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 108.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2024_003",
+        "question": "What is Tesla's Optimus humanoid robot and its development status?",
+        "gold_doc": "Tesla 2024 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 88.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_001",
+        "question": "What was Vestas' total revenue in 2023?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 72.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_002",
+        "question": "What was Vestas EBIT (operating profit) in 2023?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": null,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 39.1,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_003",
+        "question": "What was Vestas' EBIT margin percentage in 2023?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 62.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_004",
+        "question": "How many MW of wind turbines did Vestas deliver in 2023?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 41.2,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_005",
+        "question": "What is the size of Vestas' order backlog?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 65.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_006",
+        "question": "What is Vestas' service and maintenance business model?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 62.9,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2023_001",
+        "question": "宁德时代2023年营业收入是多少？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2023 Annual Report",
+          "CATL 2025 Annual Report"
+        ],
+        "latency_ms": 71.7,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "catl_2023_002",
+        "question": "宁德时代2023年归属于上市公司股东的净利润是多少？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2023 Annual Report",
+          "CATL 2025 Annual Report"
+        ],
+        "latency_ms": 45.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2023_003",
+        "question": "宁德时代CTP 3.0麒麟电池的主要技术优势是什么？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2023 Annual Report",
+          "CATL 2025 Annual Report"
+        ],
+        "latency_ms": 50.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2023_004",
+        "question": "宁德时代在欧洲建立了哪些生产基地？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2023 Annual Report",
+          "CATL 2025 Annual Report"
+        ],
+        "latency_ms": 84.4,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2023_005",
+        "question": "宁德时代的换电品牌叫什么名字？其商业模式是什么？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 4,
+        "page_rank": 4,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "01 china new energy overview",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 42.1,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2023_006",
+        "question": "宁德时代2023年研发费用及占营收比例是多少？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2023 Annual Report",
+          "CATL 2025 Annual Report"
+        ],
+        "latency_ms": 46.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2025_001",
+        "question": "宁德时代最新年报（2024年度）中营业收入是多少？",
+        "gold_doc": "CATL 2025 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 112.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2025_002",
+        "question": "宁德时代在2024年推出了什么新电池技术或产品？",
+        "gold_doc": "CATL 2025 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "CATL 2023 Annual Report",
+          "CATL 2025 Annual Report"
+        ],
+        "latency_ms": 60.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2025_003",
+        "question": "宁德时代全球动力电池市场占有率排名如何？",
+        "gold_doc": "CATL 2025 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 45.4,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_001",
+        "question": "According to IRENA, what is the global renewable energy capacity target by 2030?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024",
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 59.9,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_002",
+        "question": "How much annual energy investment is required by 2030 according to IRENA's World Energy Transitions Outlook?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 85.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_003",
+        "question": "What share of global electricity generation should come from renewables by 2030 according to IRENA?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 3,
+        "page_rank": 3,
+        "retrieved_docs": [
+          "IEA Renewables 2025",
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 78.0,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_004",
+        "question": "What does IRENA say about critical minerals supply chains for the energy transition?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 48.2,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "irena_2024_005",
+        "question": "What are the main barriers and challenges to accelerating the energy transition according to IRENA?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 93.2,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_renewables_001",
+        "question": "What is IEA's forecast for global solar capacity additions in 2025?",
+        "gold_doc": "IEA Renewables 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 47.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_renewables_002",
+        "question": "According to IEA, what percentage of global electricity comes from renewable sources?",
+        "gold_doc": "IEA Renewables 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Renewables 2025",
+          "IEA Electricity Mid-Year Update 2025"
+        ],
+        "latency_ms": 45.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_renewables_003",
+        "question": "Which countries are leading in renewable energy capacity additions according to IEA Renewables 2025?",
+        "gold_doc": "IEA Renewables 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 52.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_renewables_004",
+        "question": "What is IEA's outlook for wind energy deployment in 2025?",
+        "gold_doc": "IEA Renewables 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Renewables 2025",
+          "IEA Electricity Mid-Year Update 2025"
+        ],
+        "latency_ms": 58.8,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_electricity_001",
+        "question": "What does IEA forecast for global electricity demand growth in 2025?",
+        "gold_doc": "IEA Electricity Mid-Year Update 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Electricity Mid-Year Update 2025"
+        ],
+        "latency_ms": 44.2,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_electricity_002",
+        "question": "How are data centers and AI contributing to electricity demand growth according to IEA?",
+        "gold_doc": "IEA Electricity Mid-Year Update 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Electricity Mid-Year Update 2025"
+        ],
+        "latency_ms": 55.9,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_electricity_003",
+        "question": "What is IEA's mid-year assessment of China's electricity demand in 2025?",
+        "gold_doc": "IEA Electricity Mid-Year Update 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Electricity Mid-Year Update 2025"
+        ],
+        "latency_ms": 62.4,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "longi_001",
+        "question": "What is LONGi's total solar module shipment volume?",
+        "gold_doc": "LONGi Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "LONGi Investor Reports"
+        ],
+        "latency_ms": 44.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "longi_002",
+        "question": "What is LONGi's main solar cell technology and efficiency record?",
+        "gold_doc": "LONGi Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "LONGi Investor Reports"
+        ],
+        "latency_ms": 48.9,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "longi_003",
+        "question": "隆基绿能的主要营业收入来源是什么？",
+        "gold_doc": "LONGi Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "LONGi Investor Reports"
+        ],
+        "latency_ms": 75.4,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "longi_004",
+        "question": "What is LONGi's global market strategy and overseas expansion?",
+        "gold_doc": "LONGi Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "LONGi Investor Reports"
+        ],
+        "latency_ms": 55.4,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "firstsolar_001",
+        "question": "What makes First Solar's CdTe thin-film technology different from conventional silicon panels?",
+        "gold_doc": "First Solar Annual Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "First Solar Annual Reports"
+        ],
+        "latency_ms": 87.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "firstsolar_002",
+        "question": "Where does First Solar manufacture its solar panels?",
+        "gold_doc": "First Solar Annual Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "First Solar Annual Reports"
+        ],
+        "latency_ms": 55.4,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "firstsolar_003",
+        "question": "What is First Solar's competitive advantage against Chinese solar panel manufacturers?",
+        "gold_doc": "First Solar Annual Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "First Solar Annual Reports"
+        ],
+        "latency_ms": 43.5,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "sungrow_001",
+        "question": "What are Sungrow's main product lines and business segments?",
+        "gold_doc": "Sungrow Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Sungrow Investor Reports"
+        ],
+        "latency_ms": 48.2,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "sungrow_002",
+        "question": "阳光电源的储能业务收入占公司总收入的比例是多少？",
+        "gold_doc": "Sungrow Investor Reports",
+        "doc_rank": null,
+        "page_rank": null,
+        "retrieved_docs": [
+          "First Solar Annual Reports"
+        ],
+        "latency_ms": 49.9,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "byd_001",
+        "question": "What are BYD's main business segments?",
+        "gold_doc": "BYD Periodic Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "BYD Periodic Reports"
+        ],
+        "latency_ms": 78.0,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "byd_002",
+        "question": "BYD的新能源汽车2023年销售情况如何？",
+        "gold_doc": "BYD Periodic Reports",
+        "doc_rank": null,
+        "page_rank": null,
+        "retrieved_docs": [
+          "CATL 2023 Annual Report",
+          "CATL 2025 Annual Report"
+        ],
+        "latency_ms": 61.2,
+        "keyword_hit": true
+      }
+    ],
+    "hybrid": [
+      {
+        "case_id": "tesla_2023_001",
+        "question": "What was Tesla's total revenue in fiscal year 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 144.2,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_002",
+        "question": "What was Tesla's automotive revenue in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 132.4,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_003",
+        "question": "How many vehicles did Tesla deliver in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 131.2,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_004",
+        "question": "What was Tesla's net income attributable to common stockholders in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 114.2,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_005",
+        "question": "How much did Tesla invest in research and development in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 124.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_006",
+        "question": "What was Tesla's energy generation and storage segment revenue in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 124.1,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_007",
+        "question": "What was Tesla's overall gross margin percentage in fiscal year 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 3,
+        "page_rank": 3,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 121.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_008",
+        "question": "What does Tesla say about its Supercharger network?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 120.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_009",
+        "question": "What are Tesla's reportable business segments?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 120.9,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_010",
+        "question": "What are the key risk factors Tesla disclosed in its 2023 annual report?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 124.0,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2024_001",
+        "question": "What was Tesla's total revenue in 2024?",
+        "gold_doc": "Tesla 2024 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 120.8,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2024_002",
+        "question": "How many vehicles did Tesla deliver in 2024?",
+        "gold_doc": "Tesla 2024 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 129.8,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2024_003",
+        "question": "What is Tesla's Optimus humanoid robot and its development status?",
+        "gold_doc": "Tesla 2024 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 129.1,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_001",
+        "question": "What was Vestas' total revenue in 2023?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 86.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_002",
+        "question": "What was Vestas EBIT (operating profit) in 2023?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 110.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_003",
+        "question": "What was Vestas' EBIT margin percentage in 2023?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 111.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_004",
+        "question": "How many MW of wind turbines did Vestas deliver in 2023?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 113.0,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_005",
+        "question": "What is the size of Vestas' order backlog?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 58.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_006",
+        "question": "What is Vestas' service and maintenance business model?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 82.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2023_001",
+        "question": "宁德时代2023年营业收入是多少？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 175.1,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2023_002",
+        "question": "宁德时代2023年归属于上市公司股东的净利润是多少？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 156.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2023_003",
+        "question": "宁德时代CTP 3.0麒麟电池的主要技术优势是什么？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2023 Annual Report",
+          "CATL 2025 Annual Report"
+        ],
+        "latency_ms": 86.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2023_004",
+        "question": "宁德时代在欧洲建立了哪些生产基地？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 162.4,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "catl_2023_005",
+        "question": "宁德时代的换电品牌叫什么名字？其商业模式是什么？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 166.2,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "catl_2023_006",
+        "question": "宁德时代2023年研发费用及占营收比例是多少？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 163.4,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "catl_2025_001",
+        "question": "宁德时代最新年报（2024年度）中营业收入是多少？",
+        "gold_doc": "CATL 2025 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 160.0,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2025_002",
+        "question": "宁德时代在2024年推出了什么新电池技术或产品？",
+        "gold_doc": "CATL 2025 Annual Report",
+        "doc_rank": 3,
+        "page_rank": 3,
+        "retrieved_docs": [
+          "CATL 2023 Annual Report",
+          "CATL 2025 Annual Report"
+        ],
+        "latency_ms": 87.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2025_003",
+        "question": "宁德时代全球动力电池市场占有率排名如何？",
+        "gold_doc": "CATL 2025 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 96.1,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_001",
+        "question": "According to IRENA, what is the global renewable energy capacity target by 2030?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 73.9,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_002",
+        "question": "How much annual energy investment is required by 2030 according to IRENA's World Energy Transitions Outlook?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 91.2,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_003",
+        "question": "What share of global electricity generation should come from renewables by 2030 according to IRENA?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 70.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_004",
+        "question": "What does IRENA say about critical minerals supply chains for the energy transition?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 78.0,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_005",
+        "question": "What are the main barriers and challenges to accelerating the energy transition according to IRENA?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 79.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_renewables_001",
+        "question": "What is IEA's forecast for global solar capacity additions in 2025?",
+        "gold_doc": "IEA Renewables 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 96.8,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_renewables_002",
+        "question": "According to IEA, what percentage of global electricity comes from renewable sources?",
+        "gold_doc": "IEA Renewables 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 95.4,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_renewables_003",
+        "question": "Which countries are leading in renewable energy capacity additions according to IEA Renewables 2025?",
+        "gold_doc": "IEA Renewables 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 92.4,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_renewables_004",
+        "question": "What is IEA's outlook for wind energy deployment in 2025?",
+        "gold_doc": "IEA Renewables 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 126.9,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_electricity_001",
+        "question": "What does IEA forecast for global electricity demand growth in 2025?",
+        "gold_doc": "IEA Electricity Mid-Year Update 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Electricity Mid-Year Update 2025"
+        ],
+        "latency_ms": 80.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_electricity_002",
+        "question": "How are data centers and AI contributing to electricity demand growth according to IEA?",
+        "gold_doc": "IEA Electricity Mid-Year Update 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Electricity Mid-Year Update 2025"
+        ],
+        "latency_ms": 135.9,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_electricity_003",
+        "question": "What is IEA's mid-year assessment of China's electricity demand in 2025?",
+        "gold_doc": "IEA Electricity Mid-Year Update 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Electricity Mid-Year Update 2025"
+        ],
+        "latency_ms": 113.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "longi_001",
+        "question": "What is LONGi's total solar module shipment volume?",
+        "gold_doc": "LONGi Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "LONGi Investor Reports"
+        ],
+        "latency_ms": 239.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "longi_002",
+        "question": "What is LONGi's main solar cell technology and efficiency record?",
+        "gold_doc": "LONGi Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "LONGi Investor Reports"
+        ],
+        "latency_ms": 123.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "longi_003",
+        "question": "隆基绿能的主要营业收入来源是什么？",
+        "gold_doc": "LONGi Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "LONGi Investor Reports"
+        ],
+        "latency_ms": 267.1,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "longi_004",
+        "question": "What is LONGi's global market strategy and overseas expansion?",
+        "gold_doc": "LONGi Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "LONGi Investor Reports"
+        ],
+        "latency_ms": 127.0,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "firstsolar_001",
+        "question": "What makes First Solar's CdTe thin-film technology different from conventional silicon panels?",
+        "gold_doc": "First Solar Annual Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "First Solar Annual Reports"
+        ],
+        "latency_ms": 216.0,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "firstsolar_002",
+        "question": "Where does First Solar manufacture its solar panels?",
+        "gold_doc": "First Solar Annual Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "First Solar Annual Reports"
+        ],
+        "latency_ms": 398.8,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "firstsolar_003",
+        "question": "What is First Solar's competitive advantage against Chinese solar panel manufacturers?",
+        "gold_doc": "First Solar Annual Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "First Solar Annual Reports"
+        ],
+        "latency_ms": 395.8,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "sungrow_001",
+        "question": "What are Sungrow's main product lines and business segments?",
+        "gold_doc": "Sungrow Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Sungrow Investor Reports"
+        ],
+        "latency_ms": 70.3,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "sungrow_002",
+        "question": "阳光电源的储能业务收入占公司总收入的比例是多少？",
+        "gold_doc": "Sungrow Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Sungrow Investor Reports"
+        ],
+        "latency_ms": 76.1,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "byd_001",
+        "question": "What are BYD's main business segments?",
+        "gold_doc": "BYD Periodic Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "BYD Periodic Reports"
+        ],
+        "latency_ms": 90.5,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "byd_002",
+        "question": "BYD的新能源汽车2023年销售情况如何？",
+        "gold_doc": "BYD Periodic Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "BYD Periodic Reports"
+        ],
+        "latency_ms": 64.6,
+        "keyword_hit": false
+      }
+    ],
+    "full": [
+      {
+        "case_id": "tesla_2023_001",
+        "question": "What was Tesla's total revenue in fiscal year 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 135.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_002",
+        "question": "What was Tesla's automotive revenue in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 151.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_003",
+        "question": "How many vehicles did Tesla deliver in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 138.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_004",
+        "question": "What was Tesla's net income attributable to common stockholders in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 129.8,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_005",
+        "question": "How much did Tesla invest in research and development in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 124.1,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_006",
+        "question": "What was Tesla's energy generation and storage segment revenue in 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 148.0,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_007",
+        "question": "What was Tesla's overall gross margin percentage in fiscal year 2023?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 177.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_008",
+        "question": "What does Tesla say about its Supercharger network?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 3,
+        "page_rank": 3,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report",
+          "Tesla 2023 Annual Report 10-K"
+        ],
+        "latency_ms": 347.1,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_009",
+        "question": "What are Tesla's reportable business segments?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 151.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2023_010",
+        "question": "What are the key risk factors Tesla disclosed in its 2023 annual report?",
+        "gold_doc": "Tesla 2023 Annual Report 10-K",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 135.8,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2024_001",
+        "question": "What was Tesla's total revenue in 2024?",
+        "gold_doc": "Tesla 2024 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 147.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2024_002",
+        "question": "How many vehicles did Tesla deliver in 2024?",
+        "gold_doc": "Tesla 2024 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 133.9,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "tesla_2024_003",
+        "question": "What is Tesla's Optimus humanoid robot and its development status?",
+        "gold_doc": "Tesla 2024 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "Tesla 2023 Annual Report 10-K",
+          "Tesla 2024 Annual Report"
+        ],
+        "latency_ms": 161.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_001",
+        "question": "What was Vestas' total revenue in 2023?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 97.1,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_002",
+        "question": "What was Vestas EBIT (operating profit) in 2023?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 96.1,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_003",
+        "question": "What was Vestas' EBIT margin percentage in 2023?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 133.8,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_004",
+        "question": "How many MW of wind turbines did Vestas deliver in 2023?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 138.1,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_005",
+        "question": "What is the size of Vestas' order backlog?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 89.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "vestas_2023_006",
+        "question": "What is Vestas' service and maintenance business model?",
+        "gold_doc": "Vestas 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Vestas 2023 Annual Report"
+        ],
+        "latency_ms": 99.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2023_001",
+        "question": "宁德时代2023年营业收入是多少？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 173.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2023_002",
+        "question": "宁德时代2023年归属于上市公司股东的净利润是多少？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 175.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2023_003",
+        "question": "宁德时代CTP 3.0麒麟电池的主要技术优势是什么？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2023 Annual Report",
+          "CATL 2025 Annual Report"
+        ],
+        "latency_ms": 110.1,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2023_004",
+        "question": "宁德时代在欧洲建立了哪些生产基地？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 183.8,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "catl_2023_005",
+        "question": "宁德时代的换电品牌叫什么名字？其商业模式是什么？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 2,
+        "page_rank": 2,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 254.5,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "catl_2023_006",
+        "question": "宁德时代2023年研发费用及占营收比例是多少？",
+        "gold_doc": "CATL 2023 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2023 Annual Report",
+          "CATL 2025 Annual Report"
+        ],
+        "latency_ms": 192.0,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2025_001",
+        "question": "宁德时代最新年报（2024年度）中营业收入是多少？",
+        "gold_doc": "CATL 2025 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 177.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2025_002",
+        "question": "宁德时代在2024年推出了什么新电池技术或产品？",
+        "gold_doc": "CATL 2025 Annual Report",
+        "doc_rank": 3,
+        "page_rank": 3,
+        "retrieved_docs": [
+          "CATL 2023 Annual Report",
+          "CATL 2025 Annual Report"
+        ],
+        "latency_ms": 119.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "catl_2025_003",
+        "question": "宁德时代全球动力电池市场占有率排名如何？",
+        "gold_doc": "CATL 2025 Annual Report",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "CATL 2025 Annual Report",
+          "CATL 2023 Annual Report"
+        ],
+        "latency_ms": 107.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_001",
+        "question": "According to IRENA, what is the global renewable energy capacity target by 2030?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 323.8,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_002",
+        "question": "How much annual energy investment is required by 2030 according to IRENA's World Energy Transitions Outlook?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 102.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_003",
+        "question": "What share of global electricity generation should come from renewables by 2030 according to IRENA?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 101.2,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_004",
+        "question": "What does IRENA say about critical minerals supply chains for the energy transition?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 104.7,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "irena_2024_005",
+        "question": "What are the main barriers and challenges to accelerating the energy transition according to IRENA?",
+        "gold_doc": "IRENA World Energy Transitions Outlook 2024",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IRENA World Energy Transitions Outlook 2024"
+        ],
+        "latency_ms": 104.9,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_renewables_001",
+        "question": "What is IEA's forecast for global solar capacity additions in 2025?",
+        "gold_doc": "IEA Renewables 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 104.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_renewables_002",
+        "question": "According to IEA, what percentage of global electricity comes from renewable sources?",
+        "gold_doc": "IEA Renewables 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 124.0,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_renewables_003",
+        "question": "Which countries are leading in renewable energy capacity additions according to IEA Renewables 2025?",
+        "gold_doc": "IEA Renewables 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 166.2,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_renewables_004",
+        "question": "What is IEA's outlook for wind energy deployment in 2025?",
+        "gold_doc": "IEA Renewables 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 150.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_electricity_001",
+        "question": "What does IEA forecast for global electricity demand growth in 2025?",
+        "gold_doc": "IEA Electricity Mid-Year Update 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Electricity Mid-Year Update 2025"
+        ],
+        "latency_ms": 108.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_electricity_002",
+        "question": "How are data centers and AI contributing to electricity demand growth according to IEA?",
+        "gold_doc": "IEA Electricity Mid-Year Update 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Electricity Mid-Year Update 2025",
+          "IEA Renewables 2025"
+        ],
+        "latency_ms": 133.6,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "iea_electricity_003",
+        "question": "What is IEA's mid-year assessment of China's electricity demand in 2025?",
+        "gold_doc": "IEA Electricity Mid-Year Update 2025",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "IEA Electricity Mid-Year Update 2025"
+        ],
+        "latency_ms": 139.0,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "longi_001",
+        "question": "What is LONGi's total solar module shipment volume?",
+        "gold_doc": "LONGi Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "LONGi Investor Reports"
+        ],
+        "latency_ms": 255.4,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "longi_002",
+        "question": "What is LONGi's main solar cell technology and efficiency record?",
+        "gold_doc": "LONGi Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "LONGi Investor Reports"
+        ],
+        "latency_ms": 172.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "longi_003",
+        "question": "隆基绿能的主要营业收入来源是什么？",
+        "gold_doc": "LONGi Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "LONGi Investor Reports"
+        ],
+        "latency_ms": 301.7,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "longi_004",
+        "question": "What is LONGi's global market strategy and overseas expansion?",
+        "gold_doc": "LONGi Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "LONGi Investor Reports"
+        ],
+        "latency_ms": 147.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "firstsolar_001",
+        "question": "What makes First Solar's CdTe thin-film technology different from conventional silicon panels?",
+        "gold_doc": "First Solar Annual Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "First Solar Annual Reports"
+        ],
+        "latency_ms": 252.3,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "firstsolar_002",
+        "question": "Where does First Solar manufacture its solar panels?",
+        "gold_doc": "First Solar Annual Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "First Solar Annual Reports"
+        ],
+        "latency_ms": 424.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "firstsolar_003",
+        "question": "What is First Solar's competitive advantage against Chinese solar panel manufacturers?",
+        "gold_doc": "First Solar Annual Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "First Solar Annual Reports"
+        ],
+        "latency_ms": 428.3,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "sungrow_001",
+        "question": "What are Sungrow's main product lines and business segments?",
+        "gold_doc": "Sungrow Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Sungrow Investor Reports"
+        ],
+        "latency_ms": 315.5,
+        "keyword_hit": true
+      },
+      {
+        "case_id": "sungrow_002",
+        "question": "阳光电源的储能业务收入占公司总收入的比例是多少？",
+        "gold_doc": "Sungrow Investor Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "Sungrow Investor Reports"
+        ],
+        "latency_ms": 372.5,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "byd_001",
+        "question": "What are BYD's main business segments?",
+        "gold_doc": "BYD Periodic Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "BYD Periodic Reports"
+        ],
+        "latency_ms": 92.3,
+        "keyword_hit": false
+      },
+      {
+        "case_id": "byd_002",
+        "question": "BYD的新能源汽车2023年销售情况如何？",
+        "gold_doc": "BYD Periodic Reports",
+        "doc_rank": 1,
+        "page_rank": 1,
+        "retrieved_docs": [
+          "BYD Periodic Reports"
+        ],
+        "latency_ms": 80.7,
+        "keyword_hit": false
+      }
+    ]
+  },
+  "answer_eval": {
+    "keyword_hit_rate": 0.7,
+    "sample_size": 10
+  }
+}

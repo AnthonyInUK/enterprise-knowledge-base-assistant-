@@ -5,8 +5,17 @@
     "created_at": "2026-05-10",
     "total_cases": 50,
     "documents_covered": 10,
-    "categories": ["financial", "operational", "technical", "strategic"],
-    "difficulty_levels": ["easy", "medium", "hard"],
+    "categories": [
+      "financial",
+      "operational",
+      "technical",
+      "strategic"
+    ],
+    "difficulty_levels": [
+      "easy",
+      "medium",
+      "hard"
+    ],
     "notes": "verified=true means the answer was confirmed via live system query in this session."
   },
   "cases": [
@@ -15,7 +24,10 @@
       "question": "What was Tesla's total revenue in fiscal year 2023?",
       "gold_doc": "Tesla 2023 Annual Report 10-K",
       "gold_page_range": null,
-      "expected_keywords": ["96,773", "96773"],
+      "expected_keywords": [
+        "96,773",
+        "96773"
+      ],
       "category": "financial",
       "difficulty": "easy",
       "language": "en",
@@ -27,7 +39,11 @@
       "question": "What was Tesla's automotive revenue in 2023?",
       "gold_doc": "Tesla 2023 Annual Report 10-K",
       "gold_page_range": null,
-      "expected_keywords": ["82,419", "82419", "Total automotive revenues"],
+      "expected_keywords": [
+        "82,419",
+        "82419",
+        "Total automotive revenues"
+      ],
       "category": "financial",
       "difficulty": "easy",
       "language": "en",
@@ -38,7 +54,11 @@
       "question": "How many vehicles did Tesla deliver in 2023?",
       "gold_doc": "Tesla 2023 Annual Report 10-K",
       "gold_page_range": null,
-      "expected_keywords": ["1,808,581", "1808581", "1.8 million"],
+      "expected_keywords": [
+        "1,808,581",
+        "1808581",
+        "1.8 million"
+      ],
       "category": "operational",
       "difficulty": "easy",
       "language": "en",
@@ -49,18 +69,26 @@
       "question": "What was Tesla's net income attributable to common stockholders in 2023?",
       "gold_doc": "Tesla 2023 Annual Report 10-K",
       "gold_page_range": null,
-      "expected_keywords": ["14,974", "14974", "net income"],
+      "expected_keywords": [
+        "14,997",
+        "14997"
+      ],
       "category": "financial",
       "difficulty": "medium",
       "language": "en",
-      "verified": false
+      "verified": true,
+      "notes": "Net income attributable to common stockholders 2023 = 14,997 (per income statement). 14,974 is the total Net income line, a different row; original label was wrong."
     },
     {
       "id": "tesla_2023_005",
       "question": "How much did Tesla invest in research and development in 2023?",
       "gold_doc": "Tesla 2023 Annual Report 10-K",
       "gold_page_range": null,
-      "expected_keywords": ["3,969", "3969", "R&D"],
+      "expected_keywords": [
+        "3,969",
+        "3969",
+        "R&D"
+      ],
       "category": "financial",
       "difficulty": "medium",
       "language": "en",
@@ -71,7 +99,11 @@
       "question": "What was Tesla's energy generation and storage segment revenue in 2023?",
       "gold_doc": "Tesla 2023 Annual Report 10-K",
       "gold_page_range": null,
-      "expected_keywords": ["6,035", "6035", "energy generation"],
+      "expected_keywords": [
+        "6,035",
+        "6035",
+        "energy generation"
+      ],
       "category": "financial",
       "difficulty": "medium",
       "language": "en",
@@ -82,7 +114,11 @@
       "question": "What was Tesla's overall gross margin percentage in fiscal year 2023?",
       "gold_doc": "Tesla 2023 Annual Report 10-K",
       "gold_page_range": null,
-      "expected_keywords": ["18.2", "18%", "gross margin"],
+      "expected_keywords": [
+        "18.2",
+        "18%",
+        "gross margin"
+      ],
       "category": "financial",
       "difficulty": "medium",
       "language": "en",
@@ -93,7 +129,11 @@
       "question": "What does Tesla say about its Supercharger network?",
       "gold_doc": "Tesla 2023 Annual Report 10-K",
       "gold_page_range": null,
-      "expected_keywords": ["Supercharger", "charging", "global network"],
+      "expected_keywords": [
+        "Supercharger",
+        "charging",
+        "global network"
+      ],
       "category": "operational",
       "difficulty": "medium",
       "language": "en",
@@ -104,7 +144,11 @@
       "question": "What are Tesla's reportable business segments?",
       "gold_doc": "Tesla 2023 Annual Report 10-K",
       "gold_page_range": null,
-      "expected_keywords": ["automotive", "energy", "services"],
+      "expected_keywords": [
+        "automotive",
+        "energy",
+        "services"
+      ],
       "category": "strategic",
       "difficulty": "easy",
       "language": "en",
@@ -115,7 +159,12 @@
       "question": "What are the key risk factors Tesla disclosed in its 2023 annual report?",
       "gold_doc": "Tesla 2023 Annual Report 10-K",
       "gold_page_range": null,
-      "expected_keywords": ["competition", "supply chain", "regulatory", "risk"],
+      "expected_keywords": [
+        "competition",
+        "supply chain",
+        "regulatory",
+        "risk"
+      ],
       "category": "strategic",
       "difficulty": "hard",
       "language": "en",
@@ -126,7 +175,11 @@
       "question": "What was Tesla's total revenue in 2024?",
       "gold_doc": "Tesla 2024 Annual Report",
       "gold_page_range": null,
-      "expected_keywords": ["revenue", "billion", "2024"],
+      "expected_keywords": [
+        "revenue",
+        "billion",
+        "2024"
+      ],
       "category": "financial",
       "difficulty": "easy",
       "language": "en",
@@ -137,7 +190,11 @@
       "question": "How many vehicles did Tesla deliver in 2024?",
       "gold_doc": "Tesla 2024 Annual Report",
       "gold_page_range": null,
-      "expected_keywords": ["deliver", "vehicle", "2024"],
+      "expected_keywords": [
+        "deliver",
+        "vehicle",
+        "2024"
+      ],
       "category": "operational",
       "difficulty": "easy",
       "language": "en",
@@ -148,7 +205,11 @@
       "question": "What is Tesla's Optimus humanoid robot and its development status?",
       "gold_doc": "Tesla 2024 Annual Report",
       "gold_page_range": null,
-      "expected_keywords": ["Optimus", "humanoid", "robot"],
+      "expected_keywords": [
+        "Optimus",
+        "humanoid",
+        "robot"
+      ],
       "category": "technical",
       "difficulty": "medium",
       "language": "en",
@@ -158,8 +219,15 @@
       "id": "vestas_2023_001",
       "question": "What was Vestas' total revenue in 2023?",
       "gold_doc": "Vestas 2023 Annual Report",
-      "gold_page_range": [50, 65],
-      "expected_keywords": ["15,382", "15382", "mEUR"],
+      "gold_page_range": [
+        50,
+        65
+      ],
+      "expected_keywords": [
+        "15,382",
+        "15382",
+        "mEUR"
+      ],
       "category": "financial",
       "difficulty": "easy",
       "language": "en",
@@ -170,8 +238,15 @@
       "id": "vestas_2023_002",
       "question": "What was Vestas EBIT (operating profit) in 2023?",
       "gold_doc": "Vestas 2023 Annual Report",
-      "gold_page_range": [100, 115],
-      "expected_keywords": ["-482", "EBIT", "operating profit"],
+      "gold_page_range": [
+        100,
+        115
+      ],
+      "expected_keywords": [
+        "-482",
+        "EBIT",
+        "operating profit"
+      ],
       "category": "financial",
       "difficulty": "easy",
       "language": "en",
@@ -182,8 +257,15 @@
       "id": "vestas_2023_003",
       "question": "What was Vestas' EBIT margin percentage in 2023?",
       "gold_doc": "Vestas 2023 Annual Report",
-      "gold_page_range": [50, 65],
-      "expected_keywords": ["-3.1", "-3%", "EBIT margin"],
+      "gold_page_range": [
+        50,
+        65
+      ],
+      "expected_keywords": [
+        "-3.1",
+        "-3%",
+        "EBIT margin"
+      ],
       "category": "financial",
       "difficulty": "medium",
       "language": "en",
@@ -194,7 +276,12 @@
       "question": "How many MW of wind turbines did Vestas deliver in 2023?",
       "gold_doc": "Vestas 2023 Annual Report",
       "gold_page_range": null,
-      "expected_keywords": ["MW", "GW", "deliver", "turbine"],
+      "expected_keywords": [
+        "MW",
+        "GW",
+        "deliver",
+        "turbine"
+      ],
       "category": "operational",
       "difficulty": "medium",
       "language": "en",
@@ -205,7 +292,12 @@
       "question": "What is the size of Vestas' order backlog?",
       "gold_doc": "Vestas 2023 Annual Report",
       "gold_page_range": null,
-      "expected_keywords": ["backlog", "order", "mEUR", "GW"],
+      "expected_keywords": [
+        "backlog",
+        "order",
+        "mEUR",
+        "GW"
+      ],
       "category": "operational",
       "difficulty": "medium",
       "language": "en",
@@ -216,7 +308,12 @@
       "question": "What is Vestas' service and maintenance business model?",
       "gold_doc": "Vestas 2023 Annual Report",
       "gold_page_range": null,
-      "expected_keywords": ["service", "maintenance", "AOM", "wind turbine"],
+      "expected_keywords": [
+        "service",
+        "maintenance",
+        "AOM",
+        "wind turbine"
+      ],
       "category": "strategic",
       "difficulty": "hard",
       "language": "en",
@@ -227,7 +324,12 @@
       "question": "宁德时代2023年营业收入是多少？",
       "gold_doc": "CATL 2023 Annual Report",
       "gold_page_range": null,
-      "expected_keywords": ["4009", "4,009", "400", "亿"],
+      "expected_keywords": [
+        "4009",
+        "4,009",
+        "400",
+        "亿"
+      ],
       "category": "financial",
       "difficulty": "easy",
       "language": "zh",
@@ -239,7 +341,12 @@
       "question": "宁德时代2023年归属于上市公司股东的净利润是多少？",
       "gold_doc": "CATL 2023 Annual Report",
       "gold_page_range": null,
-      "expected_keywords": ["441", "44.1", "净利润", "亿"],
+      "expected_keywords": [
+        "441",
+        "44.1",
+        "净利润",
+        "亿"
+      ],
       "category": "financial",
       "difficulty": "easy",
       "language": "zh",
@@ -251,7 +358,12 @@
       "question": "宁德时代CTP 3.0麒麟电池的主要技术优势是什么？",
       "gold_doc": "CATL 2023 Annual Report",
       "gold_page_range": null,
-      "expected_keywords": ["麒麟", "CTP", "体积利用率", "能量密度"],
+      "expected_keywords": [
+        "麒麟",
+        "CTP",
+        "体积利用率",
+        "能量密度"
+      ],
       "category": "technical",
       "difficulty": "medium",
       "language": "zh",
@@ -262,7 +374,12 @@
       "question": "宁德时代在欧洲建立了哪些生产基地？",
       "gold_doc": "CATL 2023 Annual Report",
       "gold_page_range": null,
-      "expected_keywords": ["德国", "匈牙利", "Erfurt", "Germany"],
+      "expected_keywords": [
+        "德国",
+        "匈牙利",
+        "Erfurt",
+        "Germany"
+      ],
       "category": "operational",
       "difficulty": "medium",
       "language": "zh",
@@ -273,7 +390,11 @@
       "question": "宁德时代的换电品牌叫什么名字？其商业模式是什么？",
       "gold_doc": "CATL 2023 Annual Report",
       "gold_page_range": null,
-      "expected_keywords": ["EVOGO", "换电", "巧克力换电块"],
+      "expected_keywords": [
+        "EVOGO",
+        "换电",
+        "巧克力换电块"
+      ],
       "category": "strategic",
       "difficulty": "medium",
       "language": "zh",
@@ -284,7 +405,12 @@
       "question": "宁德时代2023年研发费用及占营收比例是多少？",
       "gold_doc": "CATL 2023 Annual Report",
       "gold_page_range": null,
-      "expected_keywords": ["研发", "费用", "比例", "亿"],
+      "expected_keywords": [
+        "研发",
+        "费用",
+        "比例",
+        "亿"
+      ],
       "category": "financial",
       "difficulty": "medium",
       "language": "zh",
@@ -295,7 +421,11 @@
       "question": "宁德时代最新年报（2024年度）中营业收入是多少？",
       "gold_doc": "CATL 2025 Annual Report",
       "gold_page_range": null,
-      "expected_keywords": ["营业收入", "亿", "2024"],
+      "expected_keywords": [
+        "营业收入",
+        "亿",
+        "2024"
+      ],
       "category": "financial",
       "difficulty": "easy",
       "language": "zh",
@@ -306,7 +436,12 @@
       "question": "宁德时代在2024年推出了什么新电池技术或产品？",
       "gold_doc": "CATL 2025 Annual Report",
       "gold_page_range": null,
-      "expected_keywords": ["电池", "技术", "发布", "新产品"],
+      "expected_keywords": [
+        "电池",
+        "技术",
+        "发布",
+        "新产品"
+      ],
       "category": "technical",
       "difficulty": "medium",
       "language": "zh",
@@ -317,7 +452,12 @@
       "question": "宁德时代全球动力电池市场占有率排名如何？",
       "gold_doc": "CATL 2025 Annual Report",
       "gold_page_range": null,
-      "expected_keywords": ["市场份额", "第一", "全球", "动力电池"],
+      "expected_keywords": [
+        "市场份额",
+        "第一",
+        "全球",
+        "动力电池"
+      ],
       "category": "strategic",
       "difficulty": "medium",
       "language": "zh",
@@ -328,7 +468,12 @@
       "question": "According to IRENA, what is the global renewable energy capacity target by 2030?",
       "gold_doc": "IRENA World Energy Transitions Outlook 2024",
       "gold_page_range": null,
-      "expected_keywords": ["11,000 GW", "tripling", "triple", "2030"],
+      "expected_keywords": [
+        "11,000 GW",
+        "tripling",
+        "triple",
+        "2030"
+      ],
       "category": "strategic",
       "difficulty": "easy",
       "language": "en",
@@ -339,7 +484,12 @@
       "question": "How much annual energy investment is required by 2030 according to IRENA's World Energy Transitions Outlook?",
       "gold_doc": "IRENA World Energy Transitions Outlook 2024",
       "gold_page_range": null,
-      "expected_keywords": ["trillion", "investment", "USD", "annual"],
+      "expected_keywords": [
+        "trillion",
+        "investment",
+        "USD",
+        "annual"
+      ],
       "category": "financial",
       "difficulty": "medium",
       "language": "en",
@@ -350,7 +500,12 @@
       "question": "What share of global electricity generation should come from renewables by 2030 according to IRENA?",
       "gold_doc": "IRENA World Energy Transitions Outlook 2024",
       "gold_page_range": null,
-      "expected_keywords": ["60%", "renewable", "electricity", "share"],
+      "expected_keywords": [
+        "60%",
+        "renewable",
+        "electricity",
+        "share"
+      ],
       "category": "strategic",
       "difficulty": "medium",
       "language": "en",
@@ -361,7 +516,12 @@
       "question": "What does IRENA say about critical minerals supply chains for the energy transition?",
       "gold_doc": "IRENA World Energy Transitions Outlook 2024",
       "gold_page_range": null,
-      "expected_keywords": ["lithium", "cobalt", "critical minerals", "supply chain"],
+      "expected_keywords": [
+        "lithium",
+        "cobalt",
+        "critical minerals",
+        "supply chain"
+      ],
       "category": "strategic",
       "difficulty": "hard",
       "language": "en",
@@ -372,7 +532,13 @@
       "question": "What are the main barriers and challenges to accelerating the energy transition according to IRENA?",
       "gold_doc": "IRENA World Energy Transitions Outlook 2024",
       "gold_page_range": null,
-      "expected_keywords": ["barrier", "challenge", "policy", "finance", "grid"],
+      "expected_keywords": [
+        "barrier",
+        "challenge",
+        "policy",
+        "finance",
+        "grid"
+      ],
       "category": "strategic",
       "difficulty": "hard",
       "language": "en",
@@ -383,7 +549,12 @@
       "question": "What is IEA's forecast for global solar capacity additions in 2025?",
       "gold_doc": "IEA Renewables 2025",
       "gold_page_range": null,
-      "expected_keywords": ["solar", "GW", "capacity", "2025"],
+      "expected_keywords": [
+        "solar",
+        "GW",
+        "capacity",
+        "2025"
+      ],
       "category": "operational",
       "difficulty": "easy",
       "language": "en",
@@ -394,7 +565,12 @@
       "question": "According to IEA, what percentage of global electricity comes from renewable sources?",
       "gold_doc": "IEA Renewables 2025",
       "gold_page_range": null,
-      "expected_keywords": ["renewable", "electricity", "percent", "%"],
+      "expected_keywords": [
+        "renewable",
+        "electricity",
+        "percent",
+        "%"
+      ],
       "category": "strategic",
       "difficulty": "medium",
       "language": "en",
@@ -405,7 +581,12 @@
       "question": "Which countries are leading in renewable energy capacity additions according to IEA Renewables 2025?",
       "gold_doc": "IEA Renewables 2025",
       "gold_page_range": null,
-      "expected_keywords": ["China", "United States", "Europe", "India"],
+      "expected_keywords": [
+        "China",
+        "United States",
+        "Europe",
+        "India"
+      ],
       "category": "strategic",
       "difficulty": "medium",
       "language": "en",
@@ -416,7 +597,12 @@
       "question": "What is IEA's outlook for wind energy deployment in 2025?",
       "gold_doc": "IEA Renewables 2025",
       "gold_page_range": null,
-      "expected_keywords": ["wind", "GW", "onshore", "offshore"],
+      "expected_keywords": [
+        "wind",
+        "GW",
+        "onshore",
+        "offshore"
+      ],
       "category": "operational",
       "difficulty": "medium",
       "language": "en",
@@ -427,7 +613,12 @@
       "question": "What does IEA forecast for global electricity demand growth in 2025?",
       "gold_doc": "IEA Electricity Mid-Year Update 2025",
       "gold_page_range": null,
-      "expected_keywords": ["electricity demand", "growth", "TWh", "2025"],
+      "expected_keywords": [
+        "electricity demand",
+        "growth",
+        "TWh",
+        "2025"
+      ],
       "category": "strategic",
       "difficulty": "medium",
       "language": "en",
@@ -438,7 +629,12 @@
       "question": "How are data centers and AI contributing to electricity demand growth according to IEA?",
       "gold_doc": "IEA Electricity Mid-Year Update 2025",
       "gold_page_range": null,
-      "expected_keywords": ["data center", "AI", "demand", "electricity"],
+      "expected_keywords": [
+        "data center",
+        "AI",
+        "demand",
+        "electricity"
+      ],
       "category": "technical",
       "difficulty": "medium",
       "language": "en",
@@ -449,7 +645,11 @@
       "question": "What is IEA's mid-year assessment of China's electricity demand in 2025?",
       "gold_doc": "IEA Electricity Mid-Year Update 2025",
       "gold_page_range": null,
-      "expected_keywords": ["China", "electricity", "demand"],
+      "expected_keywords": [
+        "China",
+        "electricity",
+        "demand"
+      ],
       "category": "strategic",
       "difficulty": "hard",
       "language": "en",
@@ -460,7 +660,12 @@
       "question": "What is LONGi's total solar module shipment volume?",
       "gold_doc": "LONGi Investor Reports",
       "gold_page_range": null,
-      "expected_keywords": ["GW", "shipment", "module", "solar"],
+      "expected_keywords": [
+        "GW",
+        "shipment",
+        "module",
+        "solar"
+      ],
       "category": "operational",
       "difficulty": "easy",
       "language": "en",
@@ -471,7 +676,12 @@
       "question": "What is LONGi's main solar cell technology and efficiency record?",
       "gold_doc": "LONGi Investor Reports",
       "gold_page_range": null,
-      "expected_keywords": ["HIMO", "monocrystalline", "efficiency", "TOPCon"],
+      "expected_keywords": [
+        "HIMO",
+        "monocrystalline",
+        "efficiency",
+        "TOPCon"
+      ],
       "category": "technical",
       "difficulty": "medium",
       "language": "en",
@@ -482,7 +692,12 @@
       "question": "隆基绿能的主要营业收入来源是什么？",
       "gold_doc": "LONGi Investor Reports",
       "gold_page_range": null,
-      "expected_keywords": ["硅片", "组件", "电池", "营业收入"],
+      "expected_keywords": [
+        "硅片",
+        "组件",
+        "电池",
+        "营业收入"
+      ],
       "category": "financial",
       "difficulty": "medium",
       "language": "zh",
@@ -493,7 +708,12 @@
       "question": "What is LONGi's global market strategy and overseas expansion?",
       "gold_doc": "LONGi Investor Reports",
       "gold_page_range": null,
-      "expected_keywords": ["overseas", "global", "market", "export"],
+      "expected_keywords": [
+        "overseas",
+        "global",
+        "market",
+        "export"
+      ],
       "category": "strategic",
       "difficulty": "hard",
       "language": "en",
@@ -504,7 +724,12 @@
       "question": "What makes First Solar's CdTe thin-film technology different from conventional silicon panels?",
       "gold_doc": "First Solar Annual Reports",
       "gold_page_range": null,
-      "expected_keywords": ["CdTe", "thin film", "cadmium telluride", "silicon"],
+      "expected_keywords": [
+        "CdTe",
+        "thin film",
+        "cadmium telluride",
+        "silicon"
+      ],
       "category": "technical",
       "difficulty": "medium",
       "language": "en",
@@ -515,7 +740,13 @@
       "question": "Where does First Solar manufacture its solar panels?",
       "gold_doc": "First Solar Annual Reports",
       "gold_page_range": null,
-      "expected_keywords": ["Ohio", "Malaysia", "Vietnam", "India", "manufacturing"],
+      "expected_keywords": [
+        "Ohio",
+        "Malaysia",
+        "Vietnam",
+        "India",
+        "manufacturing"
+      ],
       "category": "operational",
       "difficulty": "easy",
       "language": "en",
@@ -526,7 +757,13 @@
       "question": "What is First Solar's competitive advantage against Chinese solar panel manufacturers?",
       "gold_doc": "First Solar Annual Reports",
       "gold_page_range": null,
-      "expected_keywords": ["domestic", "IRA", "Inflation Reduction Act", "US made", "tariff"],
+      "expected_keywords": [
+        "domestic",
+        "IRA",
+        "Inflation Reduction Act",
+        "US made",
+        "tariff"
+      ],
       "category": "strategic",
       "difficulty": "hard",
       "language": "en",
@@ -537,7 +774,12 @@
       "question": "What are Sungrow's main product lines and business segments?",
       "gold_doc": "Sungrow Investor Reports",
       "gold_page_range": null,
-      "expected_keywords": ["inverter", "energy storage", "string inverter", "central inverter"],
+      "expected_keywords": [
+        "inverter",
+        "energy storage",
+        "string inverter",
+        "central inverter"
+      ],
       "category": "technical",
       "difficulty": "easy",
       "language": "en",
@@ -548,7 +790,12 @@
       "question": "阳光电源的储能业务收入占公司总收入的比例是多少？",
       "gold_doc": "Sungrow Investor Reports",
       "gold_page_range": null,
-      "expected_keywords": ["储能", "收入", "比例", "逆变器"],
+      "expected_keywords": [
+        "储能",
+        "收入",
+        "比例",
+        "逆变器"
+      ],
       "category": "financial",
       "difficulty": "medium",
       "language": "zh",
@@ -559,7 +806,12 @@
       "question": "What are BYD's main business segments?",
       "gold_doc": "BYD Periodic Reports",
       "gold_page_range": null,
-      "expected_keywords": ["automobile", "battery", "handset", "new energy"],
+      "expected_keywords": [
+        "automobile",
+        "battery",
+        "handset",
+        "new energy"
+      ],
       "category": "strategic",
       "difficulty": "easy",
       "language": "en",
@@ -570,7 +822,12 @@
       "question": "BYD的新能源汽车2023年销售情况如何？",
       "gold_doc": "BYD Periodic Reports",
       "gold_page_range": null,
-      "expected_keywords": ["新能源", "汽车", "销量", "万辆"],
+      "expected_keywords": [
+        "新能源",
+        "汽车",
+        "销量",
+        "万辆"
+      ],
       "category": "operational",
       "difficulty": "easy",
       "language": "zh",
