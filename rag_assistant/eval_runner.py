@@ -126,7 +126,11 @@ def run_eval(eval_set_name: str = "energy_starter_v1", top_k: int = 6) -> dict[s
         raise RuntimeError(f"Eval set {eval_set_name!r} has no cases.")
 
     run_id = str(uuid.uuid4())
-    model_name = os.getenv("OLLAMA_MODEL") or "extractive-baseline"
+    model_name = (
+        os.getenv("DEEPSEEK_MODEL", "deepseek-chat") if os.getenv("DEEPSEEK_API_KEY")
+        else os.getenv("CLAUDE_MODEL") if os.getenv("ANTHROPIC_API_KEY")
+        else "extractive-baseline"
+    )
     _insert_filtered(
         db,
         "eval_runs",

@@ -241,7 +241,7 @@ FINANCIAL_METRIC_LABELS = [
 
 # Version tag for the answer post-processing / direct-fact pipeline.
 # Bump this whenever correction logic changes so cached answers invalidate.
-ANSWER_PIPELINE_VERSION = "3"
+ANSWER_PIPELINE_VERSION = "4"
 
 # Company-agnostic metrics for the direct table-extraction path.
 # Each entry maps generic question intent (bilingual triggers) to the row
@@ -440,7 +440,7 @@ class RetrievalService:
     def _answer_strategy_fingerprint(self, top_k: int) -> str:
         keys = [
             "RAG_LLM_BACKEND",
-            "OLLAMA_MODEL",
+            "DEEPSEEK_MODEL",
             "CLAUDE_MODEL",
             "RAG_TEMPERATURE",
         ]
@@ -1529,9 +1529,15 @@ class RetrievalService:
                 financial_facts,
             ])
         lines.extend(["", "Source Documents:"])
+        # Safety guard against pathological chunks (chapter-level aggregates can
+        # be ~1MB; rare paragraph chunks reach ~25k) blowing up the prompt.
+        # Default 3000 covers paragraph p99 (~2748 chars), so normal QA chunks
+        # are sent whole while monster chunks stay bounded. (The old 700 cap
+        # silently dropped any fact past char 700 of a chunk.)
+        snippet_chars = int(os.getenv("RAG_PROMPT_SNIPPET_CHARS", "3000"))
         for idx, hit in enumerate(hits, start=1):
             snippet = " ".join(hit.chunk.text.split())
-            snippet = snippet[:700]
+            snippet = snippet[:snippet_chars]
             citation = hit.chunk.citation
             lines.append(f"[{idx}] {citation}")
             lines.append(f"    {snippet}")
@@ -1807,34 +1813,45 @@ class RetrievalService:
         except (KeyError, IndexError, TypeError):
             return None
 
-    def _call_ollama(self, prompt: str) -> str | None:
-        base_url = os.getenv("OLLAMA_URL")
-        model = os.getenv("OLLAMA_MODEL")
-        if not base_url or not model:
-            return None
+    def _call_deepseek_api(self, prompt: str) -> str | None:
+        """Call DeepSeek's OpenAI-compatible chat API for answer generation.
 
-        payload = json.dumps(
-            {
-                "model": model,
-                "prompt": prompt,
-                "stream": False,
-                "options": {
-                    "temperature": float(os.getenv("RAG_TEMPERATURE", "0.2")),
-                },
-            }
-        ).encode("utf-8")
+        Requires DEEPSEEK_API_KEY in env. Falls back gracefully if unavailable.
+        Set RAG_LLM_BACKEND=deepseek to force this backend, or leave it as part
+        of the default fallback chain. Model via DEEPSEEK_MODEL (default
+        deepseek-chat); the reasoner model is unnecessary for extractive QA.
+        """
+        api_key = os.getenv("DEEPSEEK_API_KEY", "")
+        if not api_key:
+            return None
+        model = os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
+        temperature = float(os.getenv("RAG_TEMPERATURE", "0.2"))
+
+        payload = json.dumps({
+            "model": model,
+            "temperature": temperature,
+            "max_tokens": int(os.getenv("DEEPSEEK_MAX_TOKENS", "1024")),
+            "messages": [{"role": "user", "content": prompt}],
+        }).encode("utf-8")
         request = urllib.request.Request(
-            f"{base_url.rstrip('/')}/api/generate",
+            os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com").rstrip("/") + "/chat/completions",
             data=payload,
-            headers={"Content-Type": "application/json"},
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {api_key}",
+            },
             method="POST",
         )
         try:
-            with urllib.request.urlopen(request, timeout=120) as response:
+            with urllib.request.urlopen(request, timeout=float(os.getenv("DEEPSEEK_TIMEOUT_SECONDS", "60"))) as response:
                 data = json.loads(response.read().decode("utf-8"))
         except (urllib.error.URLError, TimeoutError, ValueError):
             return None
-        return str(data.get("response") or "").strip() or None
+        try:
+            text = data["choices"][0]["message"]["content"]
+            return str(text).strip() or None
+        except (KeyError, IndexError, TypeError):
+            return None
 
     def _call_llm(self, prompt: str) -> tuple[str | None, str]:
         """Try LLM backends in priority order; return (answer, backend_used)."""
@@ -1848,18 +1865,18 @@ class RetrievalService:
             answer = self._call_claude_api(prompt)
             return answer, "claude"
 
-        if backend == "ollama":
-            answer = self._call_ollama(prompt)
-            return answer, "ollama"
+        if backend == "deepseek":
+            answer = self._call_deepseek_api(prompt)
+            return answer, "deepseek"
 
-        # auto: Claude first (zero-latency setup), then Ollama
+        # auto: Claude first (zero-latency setup), then DeepSeek
         answer = self._call_claude_api(prompt)
         if answer:
             return answer, "claude"
-        answer = self._call_ollama(prompt)
-        return answer, "ollama"
+        answer = self._call_deepseek_api(prompt)
+        return answer, "deepseek"
 
-    def _log_query(self, question: str, prompt: str, answer: str, hits: Sequence[RetrievalHit], latency_ms: float, used_llm: bool) -> None:
+    def _log_query(self, question: str, prompt: str, answer: str, hits: Sequence[RetrievalHit], latency_ms: float, used_llm: bool, grounded: bool = True, ungrounded_numbers: Sequence[str] | None = None) -> None:
         try:
             columns = self._table_columns("query_logs")
         except Exception:
@@ -1873,12 +1890,14 @@ class RetrievalService:
             "retrieved_chunk_ids": [hit.chunk.id for hit in hits],
             "answer_text": answer,
             "latency_ms": int(latency_ms),
-            "model_name": os.getenv("OLLAMA_MODEL") if used_llm else "extractive-baseline",
+            "model_name": (os.getenv("DEEPSEEK_MODEL", "deepseek-chat") if os.getenv("DEEPSEEK_API_KEY") else os.getenv("CLAUDE_MODEL")) if used_llm else "extractive-baseline",
             "total_cost": 0,
             "metadata": {
                 "used_llm": used_llm,
                 "prompt": prompt,
                 "source_count": len(hits),
+                "answer_grounded": grounded,
+                "ungrounded_numbers": list(ungrounded_numbers or []),
             },
             "created_at": datetime.now(timezone.utc),
         }.items():
@@ -2047,7 +2066,15 @@ class RetrievalService:
         Returns the text plus provenance/grounding metadata.
         """
         # ── Stage 1: generate (exactly one source wins) ───────────────────
-        direct_answer = self._direct_fact_answer(question, hits)
+        # The direct-fact regex extractor is fragile: it grabs the first textual
+        # match of a metric label, which can be prose ("R&D rose 36.56%") rather
+        # than the value. With table-aware parsing the LLM reads clean rows and
+        # extracts more reliably, so direct-fact is off by default.
+        direct_answer = (
+            self._direct_fact_answer(question, hits)
+            if os.getenv("RAG_ENABLE_DIRECT_FACT", "0") == "1"
+            else None
+        )
         if direct_answer:
             answer, backend, used_llm = direct_answer, "direct-extractive", False
         else:
@@ -2091,7 +2118,7 @@ class RetrievalService:
         sources = [f"[{idx}] {hit.chunk.citation}" for idx,
                    hit in enumerate(hits, start=1)]
         latency_ms = (time.perf_counter() - started) * 1000.0
-        self._log_query(question, prompt, answer, hits, latency_ms, used_llm)
+        self._log_query(question, prompt, answer, hits, latency_ms, used_llm, grounded, ungrounded_numbers)
         result = AnswerResult(
             question=question,
             answer=answer,
@@ -2122,7 +2149,7 @@ class RetrievalService:
                 "llm_backend": llm_backend,
                 "llm_backend_config": os.getenv("RAG_LLM_BACKEND", "auto"),
                 "claude_model": os.getenv("CLAUDE_MODEL", "claude-haiku-4-5-20251001"),
-                "ollama_model": os.getenv("OLLAMA_MODEL", ""),
+                "deepseek_model": os.getenv("DEEPSEEK_MODEL", "deepseek-chat"),
                 "query_terms": list(self._build_query_tokens(question).keys())[:40],
                 "retrieval_count": len(hits),
                 "question_category": self._question_category(question),
