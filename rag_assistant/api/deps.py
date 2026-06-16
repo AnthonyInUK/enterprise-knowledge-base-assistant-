@@ -25,6 +25,39 @@ class AppState:
 _state = AppState()
 
 
+def _check_alias_coverage() -> None:
+    """Warn at startup if a corpus company is missing from the alias maps.
+
+    Surfaces dropped registrations immediately instead of letting them show up
+    as poor retrieval much later. Never fails startup — it only warns.
+    """
+    try:
+        from rag_assistant.alias_sync import (
+            DEFAULT_ALIASES_PATH,
+            DEFAULT_SOURCES_PATH,
+            coverage_report,
+            load_json,
+        )
+
+        report = coverage_report(load_json(DEFAULT_SOURCES_PATH), load_json(DEFAULT_ALIASES_PATH))
+    except Exception as exc:  # never block startup on the self-check
+        print(f"⚠️  alias coverage check skipped: {exc}")
+        return
+
+    if report["unregistered"]:
+        print(
+            f"❌ Unregistered companies (retrieval will misfire): {report['unregistered']}. "
+            "Run: python -m scripts.sync_query_aliases --apply"
+        )
+    if report["missing_aliases"]:
+        print(
+            f"⚠️  Companies with no Chinese alias (中文检索可能不准): {report['missing_aliases']}. "
+            "Add an \"aliases\" field in energy_sources.json, then re-run the sync."
+        )
+    if not report["unregistered"] and not report["missing_aliases"]:
+        print("✅ Query-alias coverage OK")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Initialise heavy resources once on startup, clean up on shutdown."""
@@ -43,6 +76,8 @@ async def lifespan(app: FastAPI):
         service = RetrievalService(_state.db)
         app.state.warmup = service.warmup()
         print(f"🔥 RAG warmup complete: {app.state.warmup}")
+
+    _check_alias_coverage()
 
     print("✅ Agent graph ready")
     yield

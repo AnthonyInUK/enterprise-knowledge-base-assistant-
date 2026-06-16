@@ -1,58 +1,228 @@
 {
   "_comment": "Query-time alias maps for retrieval. cn_alias_map expands Chinese/domain terms into English search terms; document_hints maps company mentions (zh/en) to the document identifiers used for target-document isolation. Add new companies/terms here — no code change needed.",
   "cn_alias_map": {
-    "宁德时代": ["CATL", "Contemporary Amperex Technology Co", "battery"],
-    "比亚迪": ["BYD", "build your dreams", "battery"],
-    "阳光电源": ["Sungrow", "inverter", "storage"],
-    "隆基": ["LONGi", "LONGi Green Energy", "solar", "photovoltaic"],
-    "隆基绿能": ["LONGi", "LONGi Green Energy", "solar", "photovoltaic"],
-    "特斯拉": ["Tesla", "energy", "battery", "storage"],
-    "第一太阳能": ["First Solar", "thin-film", "solar"],
-    "国际能源署": ["IEA", "renewables", "energy"],
-    "国际可再生能源署": ["IRENA", "renewables", "energy"],
-    "储能": ["storage", "battery"],
-    "光伏": ["solar", "photovoltaic"],
-    "电池": ["battery", "cell", "cells"],
-    "装机": ["capacity", "installed", "deployment"],
-    "营收": ["revenue", "income", "sales"],
-    "收入": ["revenue", "income", "sales"],
-    "利润": ["profit", "earnings", "margin"],
-    "财务": ["financial", "results"],
-    "经营结果": ["financial", "results"],
-    "产能": ["capacity", "manufacturing", "production"],
-    "制造": ["manufacturing", "production"],
-    "部署": ["deployment", "installed"],
-    "订单": ["orders", "backlog", "deliveries"],
-    "项目": ["project", "contract", "agreement"],
-    "合作": ["partner", "cooperation", "agreement"],
-    "海外": ["overseas", "international", "global"],
-    "市场": ["market", "region", "international"],
-    "技术路线": ["technology", "roadmap", "strategy"],
-    "技术": ["technology", "product", "solution"],
-    "解决方案": ["solution", "product"]
+    "宁德时代": [
+      "CATL",
+      "Contemporary Amperex Technology Co",
+      "battery"
+    ],
+    "比亚迪": [
+      "BYD",
+      "build your dreams",
+      "battery"
+    ],
+    "阳光电源": [
+      "Sungrow",
+      "inverter",
+      "storage"
+    ],
+    "隆基": [
+      "LONGi",
+      "LONGi Green Energy",
+      "solar",
+      "photovoltaic"
+    ],
+    "隆基绿能": [
+      "LONGi",
+      "LONGi Green Energy",
+      "solar",
+      "photovoltaic"
+    ],
+    "特斯拉": [
+      "Tesla",
+      "energy",
+      "battery",
+      "storage"
+    ],
+    "第一太阳能": [
+      "First Solar",
+      "thin-film",
+      "solar"
+    ],
+    "国际能源署": [
+      "IEA",
+      "renewables",
+      "energy"
+    ],
+    "国际可再生能源署": [
+      "IRENA",
+      "renewables",
+      "energy"
+    ],
+    "储能": [
+      "storage",
+      "battery"
+    ],
+    "光伏": [
+      "solar",
+      "photovoltaic"
+    ],
+    "电池": [
+      "battery",
+      "cell",
+      "cells"
+    ],
+    "装机": [
+      "capacity",
+      "installed",
+      "deployment"
+    ],
+    "营收": [
+      "revenue",
+      "income",
+      "sales"
+    ],
+    "收入": [
+      "revenue",
+      "income",
+      "sales"
+    ],
+    "利润": [
+      "profit",
+      "earnings",
+      "margin"
+    ],
+    "财务": [
+      "financial",
+      "results"
+    ],
+    "经营结果": [
+      "financial",
+      "results"
+    ],
+    "产能": [
+      "capacity",
+      "manufacturing",
+      "production"
+    ],
+    "制造": [
+      "manufacturing",
+      "production"
+    ],
+    "部署": [
+      "deployment",
+      "installed"
+    ],
+    "订单": [
+      "orders",
+      "backlog",
+      "deliveries"
+    ],
+    "项目": [
+      "project",
+      "contract",
+      "agreement"
+    ],
+    "合作": [
+      "partner",
+      "cooperation",
+      "agreement"
+    ],
+    "海外": [
+      "overseas",
+      "international",
+      "global"
+    ],
+    "市场": [
+      "market",
+      "region",
+      "international"
+    ],
+    "技术路线": [
+      "technology",
+      "roadmap",
+      "strategy"
+    ],
+    "技术": [
+      "technology",
+      "product",
+      "solution"
+    ],
+    "解决方案": [
+      "solution",
+      "product"
+    ],
+    "晶科能源": [
+      "JinkoSolar",
+      "solar",
+      "photovoltaic"
+    ]
   },
   "document_hints": {
-    "宁德时代": ["catl"],
-    "catl": ["catl"],
-    "比亚迪": ["byd"],
-    "byd": ["byd"],
-    "阳光电源": ["sungrow"],
-    "sungrow": ["sungrow"],
-    "隆基": ["longi"],
-    "隆基绿能": ["longi"],
-    "longi": ["longi"],
-    "特斯拉": ["tesla"],
-    "tesla": ["tesla"],
-    "第一太阳能": ["first solar"],
-    "first solar": ["first solar"],
-    "iea": ["iea"],
-    "国际能源署": ["iea"],
-    "irena": ["irena"],
-    "国际可再生能源署": ["irena"],
-    "vestas": ["vestas"],
-    "维斯塔斯": ["vestas"],
-    "nordex": ["nordex"],
-    "siemens gamesa": ["siemens"],
-    "gamesa": ["siemens"]
+    "宁德时代": [
+      "catl"
+    ],
+    "catl": [
+      "catl"
+    ],
+    "比亚迪": [
+      "byd"
+    ],
+    "byd": [
+      "byd"
+    ],
+    "阳光电源": [
+      "sungrow"
+    ],
+    "sungrow": [
+      "sungrow"
+    ],
+    "隆基": [
+      "longi"
+    ],
+    "隆基绿能": [
+      "longi"
+    ],
+    "longi": [
+      "longi"
+    ],
+    "特斯拉": [
+      "tesla"
+    ],
+    "tesla": [
+      "tesla"
+    ],
+    "第一太阳能": [
+      "first solar"
+    ],
+    "first solar": [
+      "first solar"
+    ],
+    "iea": [
+      "iea"
+    ],
+    "国际能源署": [
+      "iea"
+    ],
+    "irena": [
+      "irena"
+    ],
+    "国际可再生能源署": [
+      "irena"
+    ],
+    "vestas": [
+      "vestas"
+    ],
+    "维斯塔斯": [
+      "vestas"
+    ],
+    "nordex": [
+      "nordex"
+    ],
+    "siemens gamesa": [
+      "siemens"
+    ],
+    "gamesa": [
+      "siemens"
+    ],
+    "enphase": [
+      "enphase"
+    ],
+    "jinkosolar": [
+      "jinkosolar"
+    ],
+    "晶科能源": [
+      "jinkosolar"
+    ]
   }
 }
