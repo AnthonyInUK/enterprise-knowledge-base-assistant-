@@ -30,6 +30,15 @@ TARGET_METRICS = [
     "total_operating_cost", "gross_profit",
     "operating_income", "ebit", "ebit_before_special_items", "net_income",
     "net_income_attributable_to_common_stockholders", "research_and_development",
+    # CN income-statement expense components (for the 营业总成本 identity)
+    "taxes_and_surcharges", "selling_expenses", "admin_expenses", "finance_expenses",
+]
+
+# Components that sum to 营业总成本 (total_operating_cost) — a definitional
+# identity in Chinese income statements, used to verify correct extraction.
+_OPERATING_COST_COMPONENTS = [
+    "cost_of_revenue", "taxes_and_surcharges", "selling_expenses",
+    "admin_expenses", "research_and_development", "finance_expenses",
 ]
 
 _PNL_MARKERS = [
@@ -61,7 +70,8 @@ Skip metrics not present in the table.
 Chinese statements map to the same keys: 营业收入/营业总收入->total_revenues,
 营业成本->cost_of_revenue, 营业总成本->total_operating_cost, 营业利润->operating_income,
 净利润->net_income, 归属于母公司/上市公司股东的净利润->net_income_attributable_to_common_stockholders,
-研发费用->research_and_development."""
+研发费用->research_and_development, 税金及附加->taxes_and_surcharges, 销售费用->selling_expenses,
+管理费用->admin_expenses, 财务费用->finance_expenses."""
 
 
 @dataclass
@@ -203,21 +213,26 @@ def _reconciles(nums: dict[tuple[str, str], float], year: str) -> bool | None:
     """Check an income-statement identity for the year (within tolerance).
     Returns True/False if the components of an identity were extracted, else None.
 
-    Two identities (a statement satisfying either is internally consistent):
-      US-style:  gross_profit      == total_revenues - cost_of_revenue
-      CN-style:  operating_income  == total_revenues - total_operating_cost
-                 (Chinese statements rarely show a separate gross-profit line)
+    Identities (a statement passing ANY is internally consistent):
+      US gross:  gross_profit         == total_revenues - cost_of_revenue
+      CN total:  total_operating_cost == sum(cost components)  [definitional;
+                 always holds, and avoids the noisy investment/other-income
+                 items sitting between 营业总成本 and 营业利润]
     """
-    rev = nums.get((year, "total_revenues"))
     checks: list[bool] = []
+    rev = nums.get((year, "total_revenues"))
     if rev is not None:
         tol = max(2.0, abs(rev) * 0.01)
         gp, cost = nums.get((year, "gross_profit")), nums.get((year, "cost_of_revenue"))
         if gp is not None and cost is not None:
             checks.append(abs(gp - (rev - abs(cost))) <= tol)
-        op, tcost = nums.get((year, "operating_income")), nums.get((year, "total_operating_cost"))
-        if op is not None and tcost is not None:
-            checks.append(abs(op - (rev - abs(tcost))) <= tol)
+
+    tcost = nums.get((year, "total_operating_cost"))
+    if tcost is not None:
+        parts = [abs(nums[(year, k)]) for k in _OPERATING_COST_COMPONENTS if (year, k) in nums]
+        if len(parts) >= 3:  # enough components for a meaningful definitional check
+            checks.append(abs(abs(tcost) - sum(parts)) <= max(2.0, abs(tcost) * 0.01))
+
     if not checks:
         return None
     return any(checks)
