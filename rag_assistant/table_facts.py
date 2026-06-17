@@ -26,7 +26,7 @@ import fitz
 # ebit_before_special_items). Must match FACT_METRIC_HINTS keys in core.py so
 # the facts-first lookup can resolve them.
 TARGET_METRICS = [
-    "total_revenues", "total_automotive_revenues", "gross_profit",
+    "total_revenues", "total_automotive_revenues", "cost_of_revenue", "gross_profit",
     "operating_income", "ebit", "ebit_before_special_items", "net_income",
     "net_income_attributable_to_common_stockholders", "research_and_development",
 ]
@@ -156,30 +156,50 @@ def extract_income_statement_facts(pdf_path: str, company: str, doc_title: str) 
     if not obj:
         return []
     table_digits = _digits(table)
-    reliable = _table_wellformed(table)
-    rev_by_year: dict[str, float] = {}
-    out: list[ExtractedFact] = []
+    well_formed = _table_wellformed(table)
+    unit = obj.get("scale") and obj.get("currency") and f"{obj['scale']} {obj['currency']}"
+    statement_type = obj.get("statement_type") or "other"
+
+    # Collect grounded facts; index numeric values by (year, metric) for the
+    # cross-row reconciliation below.
+    raw: list[tuple[str, str, str]] = []  # (metric, value, year)
+    nums: dict[tuple[str, str], float] = {}
     for f in obj.get("facts", []):
         metric, value, year = f.get("metric_key"), str(f.get("value", "")), str(f.get("year", ""))
         if metric not in TARGET_METRICS or not value or not year:
             continue
-        d = _digits(value)
-        if not d or d not in table_digits:  # grounding: value must be in the table
+        if not _digits(value) or _digits(value) not in table_digits:  # grounding
             continue
         try:
-            num = float(value.replace(",", "").rstrip("%"))
+            nums[(year, metric)] = float(value.replace(",", "").rstrip("%"))
         except ValueError:
             continue
-        # sanity: gross_profit / operating metrics must not exceed total revenue
-        if metric == "total_revenues":
-            rev_by_year[year] = num
-        elif metric in ("gross_profit", "operating_income", "ebit") and year in rev_by_year:
-            if abs(num) > abs(rev_by_year[year]) * 1.05:
-                continue  # implausible — likely a mis-aligned cell, skip
-        unit = obj.get("scale") and obj.get("currency") and f"{obj['scale']} {obj['currency']}"
-        out.append(ExtractedFact(company, metric, value, unit or obj.get("scale"),
-                                 year, obj.get("statement_type") or "other", 0.95, reliable))
-    return out
+        raw.append((metric, value, year))
+
+    # Cross-row reconciliation for the fiscal year: a real income statement
+    # satisfies gross_profit == revenue - cost_of_revenue. This catches
+    # row-label/value misalignment that column-uniformity and single-value
+    # sanity miss (e.g. revenue 15,382 wrongly attached to the gross_profit row).
+    reconciled = _reconciles(nums, fy) if fy else None
+    reliable = bool(well_formed and reconciled is True)
+
+    return [
+        ExtractedFact(company, metric, value, unit or obj.get("scale"),
+                      year, statement_type, 0.95, reliable)
+        for metric, value, year in raw
+    ]
+
+
+def _reconciles(nums: dict[tuple[str, str], float], year: str) -> bool | None:
+    """True/False if gross_profit == revenue - cost_of_revenue holds for the
+    year (within tolerance); None if the components weren't all extracted."""
+    rev = nums.get((year, "total_revenues"))
+    cost = nums.get((year, "cost_of_revenue"))
+    gp = nums.get((year, "gross_profit"))
+    if rev is None or cost is None or gp is None:
+        return None
+    tol = max(2.0, abs(rev) * 0.01)
+    return abs(gp - (rev - abs(cost))) <= tol
 
 
 def persist_facts(db, facts: list[ExtractedFact], source_citation: str) -> int:
@@ -218,8 +238,8 @@ def main() -> None:
     args = parser.parse_args()
 
     facts = extract_income_statement_facts(args.pdf, args.company, args.title)
-    reliable = facts and facts[0].reliable
-    print(f"extracted {len(facts)} facts | source table well-formed: {bool(reliable)} "
+    reliable = bool(facts and facts[0].reliable)
+    print(f"extracted {len(facts)} facts | well-formed + reconciled: {reliable} "
           f"-> would persist as {'approved' if reliable else 'pending (not served)'}")
     for f in facts:
         print(f"  [{f.statement_type}] {f.metric} {f.period} = {f.value} {f.unit or ''}")
