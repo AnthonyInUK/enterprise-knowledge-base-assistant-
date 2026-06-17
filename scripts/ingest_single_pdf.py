@@ -427,8 +427,26 @@ def ingest_pdf(
         conn.commit()
 
     print(f"[INFO] ✅ 写入完成！共 {total_chunks_written} 个 chunks")
+
+    # ── 5. 自动抽取结构化财务事实（best-effort，不打断 ingestion）──────────
+    # 从合并损益表抽 (company, metric, year) 事实写入 research_facts；只有
+    # well-formed + 跨行勾稽通过的才 approved，否则 pending 待复核。需 DEEPSEEK
+    # key，缺失则自动跳过。可用 RAG_EXTRACT_FACTS=0 关闭。
+    facts_written = 0
+    if os.getenv("RAG_EXTRACT_FACTS", "1") == "1":
+        try:
+            from rag_assistant.core import Database
+            from rag_assistant.table_facts import extract_income_statement_facts, persist_facts
+            facts = extract_income_statement_facts(str(pdf_path), company, title)
+            if facts:
+                facts_written = persist_facts(Database(), facts, title)
+                approved = sum(1 for f in facts if f.reliable)
+                print(f"[INFO] 📊 财务事实 {facts_written} 条入库（approved {approved} / pending {facts_written - approved}）")
+        except Exception as exc:
+            print(f"[WARN] 财务事实抽取跳过: {exc}")
+
     print(f"[INFO] 下一步：运行 embed_chunks.py 为新 chunks 生成真实向量")
-    return {"document_id": str(document_id), "chunks": total_chunks_written}
+    return {"document_id": str(document_id), "chunks": total_chunks_written, "facts": facts_written}
 
 
 def main() -> None:
