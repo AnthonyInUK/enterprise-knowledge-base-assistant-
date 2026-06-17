@@ -149,6 +149,18 @@ grounding check) and ran it on Tesla and Vestas. What it established:
   kept `approved`). The Vestas EBIT/-margin seeds were **removed** — their
   source table is fitz-garbled, so the values are not trustworthy (consistent
   with the guardrail above).
-- The automatic table→facts extractor (step 2) is **not** built into ingestion
-  yet; the prototype lives outside the repo. Next: build it for fitz-clean docs
-  with the year-anchor + primary-statement-selection + guardrails proven here.
+- The automatic table→facts extractor now lives in the repo as
+  [rag_assistant/table_facts.py](rag_assistant/table_facts.py) (CLI + importable):
+  fitz → pick consolidated income statement → deepseek-chat extraction
+  (vocab-constrained, fiscal-year-anchored) → grounding + sanity → upsert
+  research_facts. **Verified end-to-end on Tesla**: deleting the hand-seeded
+  facts and running the module re-creates all 21 income-statement facts
+  correctly, and facts-first answers serve them.
+- **Guardrail limitation found:** the well-formedness check (uniform column
+  count) catches broken column structure but NOT row-label↔value misalignment
+  (Vestas page-50 is column-uniform yet attaches values to wrong rows). So
+  auto-extracted facts from dense reports are not blindly trustworthy — keep
+  the review_status workflow and add an accounting-reconciliation check
+  (gross = revenue − cost; subtotal ties) before auto-approving such docs.
+- Not yet wired into `ingest_single_pdf` (run manually as a tool for now). Wiring
+  it into ingestion + a reconciliation gate is the next step.
