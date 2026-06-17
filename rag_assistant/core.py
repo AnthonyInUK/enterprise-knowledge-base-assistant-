@@ -239,9 +239,24 @@ FINANCIAL_METRIC_LABELS = [
     "加权平均净资产收益率",
 ]
 
+# Facts-store lookup: map question phrasing to a canonical metric key. Ordered
+# most-specific first (e.g. "ebit margin" before "ebit"). Prototype scope.
+FACT_METRIC_HINTS: list[tuple[str, str]] = [
+    ("ebit margin", "ebit_margin"),
+    ("ebit", "ebit"),
+    ("operating profit", "ebit"),
+    ("research and development", "research_and_development"),
+    ("r&d", "research_and_development"),
+    ("研发", "research_and_development"),
+    ("net income attributable", "net_income_attributable_to_common_stockholders"),
+    ("归属于上市公司股东的净利润", "net_income_attributable_to_common_stockholders"),
+    ("total revenue", "total_revenues"),
+    ("营业收入", "total_revenues"),
+]
+
 # Version tag for the answer post-processing / direct-fact pipeline.
 # Bump this whenever correction logic changes so cached answers invalidate.
-ANSWER_PIPELINE_VERSION = "4"
+ANSWER_PIPELINE_VERSION = "6"
 
 # Company-agnostic metrics for the direct table-extraction path.
 # Each entry maps generic question intent (bilingual triggers) to the row
@@ -1517,8 +1532,10 @@ class RetrievalService:
             "2. Cite every factual claim inline with [1], [2], etc. matching the source list.",
             "3. Be concise and direct. Lead with the key number or fact, then context.",
             "4. For financial data always state: value, unit, year, and source citation.",
-            "5. If the documents lack sufficient evidence, say exactly what is missing — do NOT guess.",
-            "6. Use the same language as the question (中文问题→中文回答, English→English).",
+            "5. In financial tables, a number in parentheses means NEGATIVE, e.g. (482) = -482. "
+            "Read the value on the SAME row as the requested metric label, and the column for the asked year.",
+            "6. If the documents lack sufficient evidence, say exactly what is missing — do NOT guess.",
+            "7. Use the same language as the question (中文问题→中文回答, English→English).",
             "",
             f"Question: {question}",
         ]
@@ -2048,6 +2065,46 @@ class RetrievalService:
         except Exception as exc:
             self._last_answer_cache_stats.update({"write_error": str(exc)})
 
+    def _lookup_fact(self, question: str) -> str | None:
+        """Facts-first answering: resolve (company, metric, year) against the
+        structured research_facts store. Exact and unambiguous — statement_type
+        lets the consolidated statement win over segment/summary rows. Returns a
+        formatted answer or None to fall through to the LLM. (Prototype scope.)
+        """
+        q = question.lower()
+        company = next((toks[0] for name, toks in DOCUMENT_HINTS.items() if name in q), None)
+        metric = next((key for hint, key in FACT_METRIC_HINTS if hint in q), None)
+        if not company or not metric:
+            return None
+        year_match = re.search(r"\b(20\d{2})\b", question)
+        year = year_match.group(1) if year_match else None
+        try:
+            rows = self.db.fetch_all(
+                """
+                SELECT value, unit, period, source_citation,
+                       (metadata->>'statement_type') AS statement_type
+                FROM research_facts
+                WHERE company = %s AND metric = %s AND review_status = 'approved'
+                  AND (%s::text IS NULL OR period = %s)
+                ORDER BY (metadata->>'statement_type' = 'consolidated_income_statement') DESC,
+                         confidence DESC
+                LIMIT 1
+                """,
+                (company, metric, year, year),
+            )
+        except Exception:
+            return None
+        if not rows:
+            return None
+        row = rows[0]
+        value = row["value"]
+        unit = f" {row['unit']}" if row.get("unit") else ""
+        period = row.get("period") or ""
+        cite = row["source_citation"]
+        if re.search(r"[一-鿿]", question):
+            return f"{period}{('年' if period else '')}{value}{unit}（来源：{cite}）。"
+        return f"For {period or 'the requested period'}, the value was {value}{unit} (source: {cite})."
+
     def _compose_answer(
         self,
         question: str,
@@ -2065,6 +2122,18 @@ class RetrievalService:
 
         Returns the text plus provenance/grounding metadata.
         """
+        # ── Stage 0: facts-first (structured store) ───────────────────────
+        # Exact (company, metric, year) lookup against research_facts; unlike the
+        # regex extractor this is unambiguous and prefers the consolidated
+        # statement, so it answers correctly where the LLM mis-picks among
+        # similar rows (e.g. Vestas EBIT). Falls through when no fact matches.
+        fact_answer = self._lookup_fact(question)
+        if fact_answer:
+            return ComposedAnswer(
+                self._sanitize_citations(fact_answer, len(hits)),
+                "facts-store", False, True, [],
+            )
+
         # ── Stage 1: generate (exactly one source wins) ───────────────────
         # The direct-fact regex extractor is fragile: it grabs the first textual
         # match of a metric label, which can be prose ("R&D rose 36.56%") rather
