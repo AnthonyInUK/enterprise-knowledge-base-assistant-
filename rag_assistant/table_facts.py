@@ -26,7 +26,8 @@ import fitz
 # ebit_before_special_items). Must match FACT_METRIC_HINTS keys in core.py so
 # the facts-first lookup can resolve them.
 TARGET_METRICS = [
-    "total_revenues", "total_automotive_revenues", "cost_of_revenue", "gross_profit",
+    "total_revenues", "total_automotive_revenues", "cost_of_revenue",
+    "total_operating_cost", "gross_profit",
     "operating_income", "ebit", "ebit_before_special_items", "net_income",
     "net_income_attributable_to_common_stockholders", "research_and_development",
 ]
@@ -36,8 +37,12 @@ _PNL_MARKERS = [
     "research and development", "administ", "operating profit", "ebit",
     "operating income", "income from operations", "income tax", "net income",
     "net profit", "profit for the year",
+    # Chinese A-share income-statement line items
+    "营业收入", "营业总收入", "营业成本", "营业总成本", "营业利润",
+    "利润总额", "净利润", "研发费用", "销售费用", "管理费用",
 ]
-_OPERATING_GATE = ("operating profit", "ebit", "operating income", "income from operations")
+_OPERATING_GATE = ("operating profit", "ebit", "operating income", "income from operations",
+                   "营业利润", "净利润")
 
 _PROMPT = """Extract facts from ONE financial-statement table for {company}.
 
@@ -52,7 +57,11 @@ Output ONLY JSON:
   "currency": "USD|EUR|CNY|null", "scale": "millions|thousands|units|null",
   "facts": [{{"metric_key": "<one of: {vocab}>", "metric_label": "<verbatim row label>", "year": "YYYY", "value": "<num; parentheses=negative; keep % for margins>"}}]}}
 Only emit metric_key values from that list. Parentheses mean NEGATIVE: (482) -> -482.
-Skip metrics not present in the table."""
+Skip metrics not present in the table.
+Chinese statements map to the same keys: 营业收入/营业总收入->total_revenues,
+营业成本->cost_of_revenue, 营业总成本->total_operating_cost, 营业利润->operating_income,
+净利润->net_income, 归属于母公司/上市公司股东的净利润->net_income_attributable_to_common_stockholders,
+研发费用->research_and_development."""
 
 
 @dataclass
@@ -191,15 +200,27 @@ def extract_income_statement_facts(pdf_path: str, company: str, doc_title: str) 
 
 
 def _reconciles(nums: dict[tuple[str, str], float], year: str) -> bool | None:
-    """True/False if gross_profit == revenue - cost_of_revenue holds for the
-    year (within tolerance); None if the components weren't all extracted."""
+    """Check an income-statement identity for the year (within tolerance).
+    Returns True/False if the components of an identity were extracted, else None.
+
+    Two identities (a statement satisfying either is internally consistent):
+      US-style:  gross_profit      == total_revenues - cost_of_revenue
+      CN-style:  operating_income  == total_revenues - total_operating_cost
+                 (Chinese statements rarely show a separate gross-profit line)
+    """
     rev = nums.get((year, "total_revenues"))
-    cost = nums.get((year, "cost_of_revenue"))
-    gp = nums.get((year, "gross_profit"))
-    if rev is None or cost is None or gp is None:
+    checks: list[bool] = []
+    if rev is not None:
+        tol = max(2.0, abs(rev) * 0.01)
+        gp, cost = nums.get((year, "gross_profit")), nums.get((year, "cost_of_revenue"))
+        if gp is not None and cost is not None:
+            checks.append(abs(gp - (rev - abs(cost))) <= tol)
+        op, tcost = nums.get((year, "operating_income")), nums.get((year, "total_operating_cost"))
+        if op is not None and tcost is not None:
+            checks.append(abs(op - (rev - abs(tcost))) <= tol)
+    if not checks:
         return None
-    tol = max(2.0, abs(rev) * 0.01)
-    return abs(gp - (rev - abs(cost))) <= tol
+    return any(checks)
 
 
 def persist_facts(db, facts: list[ExtractedFact], source_citation: str) -> int:
